@@ -7,7 +7,7 @@ use \PDO;
 
 class Database
 {
-    private static $tables = array(
+    const TABLES = array(
         "users" => array("name","email","hash")
     );
 
@@ -23,12 +23,7 @@ class Database
         return static::execute($query);
     }
 
-    public static function insertUser($name, $email, $hash)
-    {
-        return static::insert("users", static::$tables["users"], array($name, $email, $hash));
-    }
-
-    private static function insert($table = "", $columns = array(), $values = array())
+    public static function insert($table = "", $columns = array(), $values = array())
     {
         static::checkArguments("insert", $table, $columns, $values);
 
@@ -46,12 +41,7 @@ class Database
         return static::execute($query);
     }
 
-    public static function updateUser($name, $email, $hash)
-    {
-        return static::update("users", static::$tables["users"], array($name, $email, $hash));
-    }
-
-    private static function update($table = "", $columns = array(), $values = array())
+    public static function update($table = "", $columns = array(), $values = array())
     {
         static::checkArguments("update", $table, $columns, $values);
 
@@ -73,7 +63,7 @@ class Database
         if (empty($table)) {
             throw new InvalidArgumentException("=== $caller: \$table cannot be empty");
         }
-        if (empty(static::$tables[$table])) {
+        if (empty(self::TABLES[$table])) {
             throw new InvalidArgumentException("=== $caller: \$table unknown: $table");
         }
         if (!is_array($columns)) {
@@ -82,18 +72,11 @@ class Database
         if (!count($columns)) {
             throw new InvalidArgumentException("=== $caller: \$columns cannot be empty");
         }
-        if ($caller!=="select") {
-            foreach ($columns as $col) {
-                if (!in_array($col, static::$tables[$table])) {
-                    throw new InvalidArgumentException("=== $caller: column unknown in $table: $col");
-                }
-            }
-            if (!is_array($values)) {
-                throw new InvalidArgumentException("=== $caller: \$columns: expected array, got ".gettype($columns));
-            }
-            if (count($values) != count($columns)) {
-                throw new InvalidArgumentException("=== $caller: \$columns and \$values must have the same count");
-            }
+        if (!is_array($values)) {
+            throw new InvalidArgumentException("=== $caller: \$columns: expected array, got ".gettype($columns));
+        }
+        if (!substr_compare($caller, "SELECT", 0) && !count($values)) {
+            throw new InvalidArgumentException("=== $caller: \$values cannot be empty");
         }
     }
 
