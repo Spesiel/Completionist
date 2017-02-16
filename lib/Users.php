@@ -42,4 +42,16 @@ class Users
         }
         return Database::update("users", $columns, $values);
     }
+
+    public static function activate($name)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        return Database::update("users", array("active"), array(1), array("name = '$name'"));
+    }
+
+    public static function deactivate($name)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        return Database::update("users", array("active"), array(0), array("name = '$name'"));
+    }
 }

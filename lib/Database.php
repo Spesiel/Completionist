@@ -41,7 +41,7 @@ class Database
         return static::execute($query);
     }
 
-    public static function update($table = "", $columns = array(), $values = array())
+    public static function update($table = "", $columns = array(), $values = array(), $filters = array())
     {
         static::checkArguments("update", $table, $columns, $values);
 
@@ -52,7 +52,8 @@ class Database
             $val = array_pop($values);
             $args[] = $col."='".static::encodeString($val)."'";
         }
-        $query .= implode(",", $args);
+        $query .= implode(",", $args)
+            .(!empty($filters)?" WHERE ".implode(" AND ", $filters):"");
 
         return static::execute($query);
     }
