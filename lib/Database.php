@@ -14,7 +14,7 @@ class Database
     public static function select($table = "", $columns = array("*"), $filters = array())
     {
         // Some verifications on arguments
-        static::checkArguments("select", $table, $columns, $filters);
+        static::checkArguments("select", $table, $columns, array(), $filters);
 
         $query = "SELECT ".implode(",", $columns)
             ." FROM ".$table
@@ -25,9 +25,9 @@ class Database
 
     public static function insert($table = "", $columns = array(), $values = array())
     {
-        static::checkArguments("insert", $table, $columns, $values);
+        static::checkArguments("insert", $table, $columns, $values, array());
 
-        $query = "INSERT INTO ".$table." "
+        $query = "INSERT INTO $table "
             ."(".implode(",", $columns).") "
             ."VALUES "
             ."('";
@@ -43,9 +43,9 @@ class Database
 
     public static function update($table = "", $columns = array(), $values = array(), $filters = array())
     {
-        static::checkArguments("update", $table, $columns, $values);
+        static::checkArguments("update", $table, $columns, $values, $filters);
 
-        $query = "UPDATE ".$table." SET ";
+        $query = "UPDATE $table SET ";
         $args = array();
         while (count($columns)) {
             $col = array_pop($columns);
@@ -58,7 +58,17 @@ class Database
         return static::execute($query);
     }
 
-    private static function checkArguments($caller, $table, $columns, $values)
+    public static function delete($table = "", $filters = array())
+    {
+        static::checkArguments("delete", $table, $columns, $values, $filters);
+
+        $query = "DELETE FROM $table WHERE "
+            .(!empty($filters)?" WHERE ".implode(" AND ", $filters):"");
+
+        return static::execute($query);
+    }
+
+    private static function checkArguments($caller, $table, $columns, $values, $filters)
     {
         // Some verifications on arguments
         if (empty($table)) {
@@ -78,6 +88,9 @@ class Database
         }
         if (!substr_compare($caller, "SELECT", 0) && !count($values)) {
             throw new InvalidArgumentException("=== $caller: \$values cannot be empty");
+        }
+        if (!is_array($filters)) {
+            throw new InvalidArgumentException("=== $caller: \$filters: expected array, got ".gettype($filters));
         }
     }
 
