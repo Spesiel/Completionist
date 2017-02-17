@@ -2,7 +2,7 @@
 
 class PasswordHelper
 {
-    const SECRET = "Completionist project --- 2017/02/16@2100UTC-6";
+    const SECRET = "Completionist project --- 2017/02/16@2127UTC-6 --- dqgb5&HP4J@Dn5gQwZ5oD8!KW!u2xXqu";
 
     public static function encode($password)
     {
