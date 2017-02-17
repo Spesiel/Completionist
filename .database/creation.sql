@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `completionistv2`.`users` (
   `userid` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `useridorigin` BIGINT(20) UNSIGNED NOT NULL,
   `name` VARCHAR(255) NOT NULL,
+  `hash` VARCHAR(127) NOT NULL,
   `email` VARCHAR(255) NULL,
   `modification` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `active` TINYINT(1) NOT NULL DEFAULT 1,
@@ -75,6 +76,28 @@ CREATE TABLE IF NOT EXISTS `completionistv2`.`bookmarks` (
   CONSTRAINT `fk_bookmarks_games1`
     FOREIGN KEY (`gameid`)
     REFERENCES `completionistv2`.`games` (`gameidorigin`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `completionistv2`.`sessions`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `completionistv2`.`sessions` ;
+
+CREATE TABLE IF NOT EXISTS `completionistv2`.`sessions` (
+  `sessionid` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `userid` BIGINT(20) UNSIGNED NOT NULL,
+  `token` VARCHAR(255) NOT NULL,
+  `startdate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `enddate` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `active` TINYINT(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`sessionid`, `userid`),
+  INDEX `fk_sessions_users1_idx` (`userid` ASC),
+  CONSTRAINT `fk_sessions_users1`
+    FOREIGN KEY (`userid`)
+    REFERENCES `completionistv2`.`users` (`useridorigin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
