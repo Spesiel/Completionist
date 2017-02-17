@@ -41,7 +41,7 @@ class Users
         }
         if (!empty($email)) {
             $columns[] = "email";
-            $values [] = Databse::encodeString($email);
+            $values [] = Database::encodeString($email);
         }
         if (!empty($hash)) {
             $columns[] = "hash";
