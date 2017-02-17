@@ -29,13 +29,7 @@ class Database
         $query = "INSERT INTO $table "
             ."(".implode(",", $columns).") "
             ."VALUES "
-            ."('";
-        while (count($values)) {
-            $val = array_pop($values);
-            $args[] = static::encodeString($val);
-        }
-        $args = array_reverse($args);
-        $query .= implode("','", $args)."')";
+            ."('".implode("','", $values)."')";
 
         return static::execute($query);
     }
@@ -127,7 +121,7 @@ class Database
         return $result;
     }
 
-    private static function encodeString($value)
+    public static function encodeString($value)
     {
         return strtr(rawurlencode($value), array('%21'=>'!', '%2A'=>'*', '%27'=>"'", '%28'=>'(', '%29'=>')'));
     }

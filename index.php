@@ -36,3 +36,23 @@ $result = Users::select();
 echo "Count: ".$result->rowCount;
 var_dump($result->rows);
 ***********************************************/
+
+/***********************************************
+* Tests on select/insert/update
+************************************************
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Users.php";
+
+$result = Users::select();
+echo "Count: ".$result->rowCount."<br/>";
+var_dump($result->rows);
+
+$result = Users::insert("test", "", "testhash0");
+echo "Count: ".$result->rowCount;
+sleep(2);
+$result = Users::update(1, "test", "", "testhash1");
+echo "Count: ".$result->rowCount."<br/>";
+
+$result = Users::select();
+echo "Count: ".$result->rowCount;
+var_dump($result->rows);
+***********************************************/

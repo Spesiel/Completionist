@@ -16,13 +16,17 @@ class Users
         $hash = PasswordHelper::encode($password);
 
         if (empty($email)) {
-            return Database::insert("users", array("name","hash"), array($name, $hash));
+            return Database::insert("users", array("name","hash"), array(Database::encodeString($name), $hash));
         } else {
-            return Database::insert("users", array("name","email","hash"), array($name, $email, $hash));
+            return Database::insert(
+                "users",
+                array("name","email","hash"),
+                array(Database::encodeString($name),Database::encodeString($email), $hash)
+            );
         }
     }
 
-    public static function update($name, $email, $password)
+    public static function update($userid, $name, $email, $password)
     {
         require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
         require_once $_SERVER["DOCUMENT_ROOT"]."\lib\PasswordHelper.php";
@@ -33,17 +37,26 @@ class Users
 
         if (!empty($name)) {
             $columns[] = "name";
-            $values [] = $name;
+            $values [] = Database::encodeString($name);
         }
         if (!empty($email)) {
             $columns[] = "email";
-            $values [] = $email;
+            $values [] = Databse::encodeString($email);
         }
         if (!empty($hash)) {
             $columns[] = "hash";
             $values [] = $hash;
         }
-        return Database::update("users", $columns, $values);
+
+        $result = Database::select(
+            "users",
+            array("useridorigin","name","email","hash","modification","active"),
+            array("userid=useridorigin", "useridorigin=$userid")
+        );
+        $result = json_decode(json_encode($result->rows[0]), true);
+        Database::insert("users", array("useridorigin","name","email","hash","modification","active"), $result);
+
+        return Database::update("users", $columns, $values, array("userid=useridorigin", "useridorigin=$userid"));
     }
 
     public static function activate($name)
