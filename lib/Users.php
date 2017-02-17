@@ -9,9 +9,11 @@ class Users
         return Database::select("users", $columns, $filters);
     }
 
-    public static function insert($name, $email, $hash)
+    public static function insert($name, $email, $password)
     {
         require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\PasswordHelper.php";
+        $hash = PasswordHelper::encode($password);
 
         if (empty($email)) {
             return Database::insert("users", array("name","hash"), array($name, $hash));
@@ -20,9 +22,11 @@ class Users
         }
     }
 
-    public static function update($name, $email, $hash)
+    public static function update($name, $email, $password)
     {
         require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\PasswordHelper.php";
+        $hash = PasswordHelper::encode($password);
 
         $columns = array();
         $values = array();
