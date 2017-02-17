@@ -1,5 +1,4 @@
-<?php
-namespace Completionistv2;
+<?php namespace Completionistv2;
 
 use \InvalidArgumentException;
 
