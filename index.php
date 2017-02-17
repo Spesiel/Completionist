@@ -1,11 +1,23 @@
-<?php
-namespace Completionistv2;
+<?php namespace Completionistv2;
 
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Users.php";
+/***********************************************
+* Tests on passwordHelper
+************************************************
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\PasswordHelper.php";
+
+$password = "testing the capabilities of encoding passwords";
+var_dump($password);
+$hash = PasswordHelper::encode($password);
+var_dump($hash);
+$compare = PasswordHelper::check($password, $hash);
+var_dump($compare);
+***********************************************/
 
 /***********************************************
 * Tests on select/insert/update
 ************************************************
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Users.php";
+
 $result = Users::select();
 echo "Count: ".$result->rowCount;
 var_dump($result->rows);
