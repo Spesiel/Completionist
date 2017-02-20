@@ -9,11 +9,31 @@ require_once $_SERVER["DOCUMENT_ROOT"]."\lib\PasswordHelper.php";
 printf("<h1>PasswordHelper</h1><hr/>");
 
 $password = "testing the capabilities of encoding passwords";
-var_dump($password);
+printf("Password: $password<br/>");
 $hash = PasswordHelper::encode($password);
-var_dump($hash);
+printf("Encoded password: $hash<br/>");
 $compare = PasswordHelper::check($password, $hash);
-var_dump($compare);
+printf("Password checks hash: $compare<br/>");
+/**********************************************/
+
+/***********************************************
+* Tests on tokenHelper
+***********************************************/
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\TokenHelper.php";
+printf("<h1>TokenHelper</h1><hr/>");
+
+printf("Payload: name is test");
+$payload = array("name"=>"test");
+var_dump($payload);
+$token = TokenHelper::encode($payload);
+var_dump($token);
+$newPayload = TokenHelper::decode($token);
+var_dump($newPayload);
+printf("Different payload: name is test2");
+$diffPayload = TokenHelper::decode(
+    "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoidGVzdDIifQ.4aWmIAbncNwvL31_Pml8wjr1DO44Bpoi0g4APrHxMxY"
+);
+var_dump($diffPayload);
 /**********************************************/
 
 /***********************************************
