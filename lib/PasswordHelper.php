@@ -6,11 +6,15 @@ class PasswordHelper
 
     public static function encode($password)
     {
-        return base64_encode(hash_hmac("sha256", $password, self::SECRET, false));
+        require_once $_SERVER["DOCUMENT_ROOT"]."/lib/Base64Helper.php";
+
+        return Base64Helper::encode(hash_hmac("sha256", $password, self::SECRET, false));
     }
 
     public static function check($password, $hash)
     {
-        return hash_equals(base64_decode($hash), base64_decode(static::encode($password)));
+        require_once $_SERVER["DOCUMENT_ROOT"]."/lib/Base64Helper.php";
+
+        return hash_equals(Base64Helper::decode($hash), Base64Helper::decode(static::encode($password)));
     }
 }
