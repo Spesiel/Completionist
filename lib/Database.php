@@ -17,7 +17,7 @@ class Database
         static::checkArguments("select", $table, $columns, array(), $filters);
 
         $query = "SELECT ".implode(",", $columns)
-            ." FROM ".$table
+            ." FROM $table"
             .(!empty($filters)?" WHERE ".implode(" AND ", $filters):"");
 
         return static::execute($query);
@@ -44,7 +44,7 @@ class Database
         while (count($columns)) {
             $col = array_pop($columns);
             $val = array_pop($values);
-            $args[] = $col."='".static::encodeString($val)."'";
+            $args[] = $col."='$val'";
         }
         $query .= implode(",", $args)
             .(!empty($filters)?" WHERE ".implode(" AND ", $filters):"");
@@ -116,7 +116,7 @@ class Database
             }
         } catch (\PDOException $e) {
             $connection->rollBack();
-            new CompletionistException($e->getMessage()." === Query: ".$query);
+            new CompletionistException($e->getMessage()." === Query: $query");
         }
 
         return $result;
