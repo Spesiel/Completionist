@@ -24,12 +24,21 @@ class Sessions
 
         // User found and matched
         if ($user->rowCount==1 && PasswordHelper::check($password, $user->rows[0]->hash)) {
-            // Creates token
-            $payload = array("name"=>$user->rows[0]->name);
-            $token = TokenHelper::encode($payload);
+            $check = self::select(array("token"), array("userid=".$user->rows[0]->userid,"active=1"));
 
-            $result = Database::insert("sessions", array("token","userid"), array($token, $user->rows[0]->userid));
-            $result->token = $token;
+            // There's already a session opened for that user
+            if ($check->rowCount==1) {
+                $result = new \stdclass;
+                $result->rowCount = 0;
+                $result->token = $check->rows[0]->token;
+            } else {
+                // Creates token
+                $payload = array("name"=>$user->rows[0]->name);
+                $token = TokenHelper::encode($payload);
+
+                $result = Database::insert("sessions", array("token","userid"), array($token, $user->rows[0]->userid));
+                $result->token = $token;
+            }
 
             return $result;
         }

@@ -180,6 +180,14 @@ $result = Sessions::check("dummy");
 printf("Sessions: user is not logged in, and returned null<br/>");
 var_dump($result);
 
+$result = Sessions::open("test1", "testhash1");
+printf("Sessions: ".$result->rowCount." row affected (should be 0), session is already opened<br/>");
+var_dump($result);
+
+printf("Payload: token decoded");
+var_dump(TokenHelper::decode($result->token));
+$token = $result->token;
+
 sleep(2);
 
 $result = Sessions::open("test1", "testhash");
