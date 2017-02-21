@@ -7,8 +7,9 @@ use \PDO;
 class Database
 {
     const TABLES = array(
-        "users" => array("name","email","hash"),
-        "games" => array("name","link","comment","userid")
+        "users"     => array("name","email","hash"),
+        "games"     => array("name","link","comment","userid"),
+        "sessions"  => array("token","userid")
     );
 
     public static function select($table = "", $columns = array("*"), $filters = array())
