@@ -9,7 +9,8 @@ class Database
     const TABLES = array(
         "users"     => array("name","email","hash"),
         "games"     => array("name","link","comment","userid"),
-        "sessions"  => array("token","userid")
+        "sessions"  => array("token","userid"),
+        "bookmarks" => array("userid","gameid")
     );
 
     public static function select($table = "", $columns = array("*"), $filters = array())
@@ -55,9 +56,9 @@ class Database
 
     public static function delete($table = "", $filters = array())
     {
-        static::checkArguments("delete", $table, $columns, $values, $filters);
+        static::checkArguments("delete", $table, array("userid","gameid"), array("userid","gameid"), $filters);
 
-        $query = "DELETE FROM $table WHERE "
+        $query = "DELETE FROM $table"
             .(!empty($filters)?" WHERE ".implode(" AND ", $filters):"");
 
         return static::execute($query);

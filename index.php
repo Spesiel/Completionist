@@ -51,7 +51,7 @@ printf("Users has: ".$result->rowCount." entries<br/>");
 var_dump($result->rows);
 
 $result = Users::insert("test", "", "testhash");
-printf("Users has: ".$result->rowCount." entries (should be 1)<br/>");
+printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
 
 $result = Users::select();
 printf("Users has: ".$result->rowCount." entries (should be 1)<br/>");
@@ -86,7 +86,7 @@ printf("Games has: ".$result->rowCount." entries<br/>");
 var_dump($result->rows);
 
 $result = Games::insert("game", "link", "comment", 1);
-printf("Games has: ".$result->rowCount." entries (should be 1)<br/>");
+printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 
 $result = Games::select();
 printf("Games has: ".$result->rowCount." entries (should be 1)<br/>");
@@ -107,6 +107,45 @@ printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 
 $result = Games::select();
 printf("Games has: ".$result->rowCount." entries (should be 4)<br/>");
+var_dump($result->rows);
+/**********************************************/
+
+/***********************************************
+* Tests on bookmarks add/delete
+***********************************************/
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Bookmarks.php";
+printf("<h1>Bookmarks add/delete</h1><hr/>");
+
+$result = Bookmarks::select();
+printf("Bookmarks has: ".$result->rowCount." entries<br/>");
+var_dump($result->rows);
+
+$result = Bookmarks::add(1, 1);
+printf("Bookmarks: ".$result->rowCount." row affected (should be 1)<br/>");
+
+$result = Bookmarks::select();
+printf("Bookmarks has: ".$result->rowCount." entries (should be 1)<br/>");
+var_dump($result->rows);
+
+$result = Bookmarks::add(3, 1);
+printf("Bookmarks: ".$result->rowCount." row affected (should be 1)<br/>");
+
+$result = Bookmarks::select();
+printf("Bookmarks has: ".$result->rowCount." entries (should be 2)<br/>");
+var_dump($result->rows);
+
+$result = Bookmarks::add(3, 3);
+printf("Bookmarks: ".$result->rowCount." row affected (should be 1)<br/>");
+
+$result = Bookmarks::select();
+printf("Bookmarks has: ".$result->rowCount." entries (should be 3)<br/>");
+var_dump($result->rows);
+
+$result = Bookmarks::remove(3, 1);
+printf("Bookmarks: ".$result->rowCount." row affected (should be 1)<br/>");
+
+$result = Bookmarks::select();
+printf("Bookmarks has: ".$result->rowCount." entries (should be 2)<br/>");
 var_dump($result->rows);
 /**********************************************/
 
