@@ -13,7 +13,9 @@ printf("Password: $password<br/>");
 $hash = PasswordHelper::encode($password);
 printf("Encoded password: $hash<br/>");
 $compare = PasswordHelper::check($password, $hash);
-printf("Password checks hash: $compare<br/>");
+printf("Password checks hash: $compare (should be 1)<br/>");
+$compare = PasswordHelper::check("wrong password", $hash);
+printf("Password checks hash: ".(!$compare?"null":"1")." (should be null)<br/>");
 /**********************************************/
 
 /***********************************************
