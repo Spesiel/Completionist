@@ -91,9 +91,10 @@ CREATE TABLE IF NOT EXISTS `completionistv2`.`sessions` (
   `userid` BIGINT(20) UNSIGNED NOT NULL,
   `token` VARCHAR(255) NOT NULL,
   `startdate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `enddate` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `enddate` TIMESTAMP NULL,
   `active` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`sessionid`, `userid`),
+  INDEX `token_idx` (`token` ASC),
   INDEX `fk_sessions_users1_idx` (`userid` ASC),
   CONSTRAINT `fk_sessions_users1`
     FOREIGN KEY (`userid`)
@@ -143,6 +144,15 @@ USE `completionistv2`$$
 CREATE DEFINER = CURRENT_USER TRIGGER `completionistv2`.`games_BEFORE_UPDATE` BEFORE UPDATE ON `games` FOR EACH ROW
 BEGIN
 	SET NEW.modification = CURRENT_TIMESTAMP;
+END$$
+
+
+USE `completionistv2`$$
+DROP TRIGGER IF EXISTS `completionistv2`.`sessions_BEFORE_UPDATE` $$
+USE `completionistv2`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `completionistv2`.`sessions_BEFORE_UPDATE` BEFORE UPDATE ON `sessions` FOR EACH ROW
+BEGIN
+	SET NEW.enddate = CURRENT_TIMESTAMP;
 END$$
 
 
