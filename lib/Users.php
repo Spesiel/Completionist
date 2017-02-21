@@ -48,6 +48,40 @@ class Users
             $values [] = $hash;
         }
 
+        self::saveEntry($userid);
+        return Database::update("users", $columns, $values, array("userid=useridorigin", "useridorigin=$userid"));
+    }
+
+    public static function activate($userid)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+
+        self::saveEntry($userid);
+        return Database::update(
+            "users",
+            array("active"),
+            array(1),
+            array("userid=useridorigin", "useridorigin=$userid")
+        );
+    }
+
+    public static function deactivate($userid)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+
+        self::saveEntry($userid);
+        return Database::update(
+            "users",
+            array("active"),
+            array(0),
+            array("userid=useridorigin", "useridorigin=$userid")
+        );
+    }
+
+    private static function saveEntry($userid)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+
         $result = Database::select(
             "users",
             array("useridorigin","name","email","hash","modification","active"),
@@ -55,19 +89,5 @@ class Users
         );
         $result = json_decode(json_encode($result->rows[0]), true);
         Database::insert("users", array("useridorigin","name","email","hash","modification","active"), $result);
-
-        return Database::update("users", $columns, $values, array("userid=useridorigin", "useridorigin=$userid"));
-    }
-
-    public static function activate($name)
-    {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
-        return Database::update("users", array("active"), array(1), array("name = '$name'"));
-    }
-
-    public static function deactivate($name)
-    {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
-        return Database::update("users", array("active"), array(0), array("name = '$name'"));
     }
 }

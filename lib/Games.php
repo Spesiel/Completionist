@@ -33,14 +33,48 @@ class Games
         }
         if (!empty($link)) {
             $columns[] = "link";
-            $values [] = Databse::encodeString($link);
+            $values [] = Database::encodeString($link);
         }
         if (!empty($comment)) {
             $columns[] = "comment";
-            $values [] = Databse::encodeString($comment);
+            $values [] = Database::encodeString($comment);
         }
         $columns[] = "userid";
         $values[] = $userid;
+
+        self::saveEntry($gameid);
+        return Database::update("games", $columns, $values, array("gameid=gameidorigin", "gameidorigin=$gameid"));
+    }
+
+    public static function lock($gameid, $userid)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+
+        self::saveEntry($gameid);
+        return Database::update(
+            "games",
+            array("locked","userid"),
+            array(1,$userid),
+            array("gameid=gameidorigin", "gameid = $gameid")
+        );
+    }
+
+    public static function unlock($gameid, $userid)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+
+        self::saveEntry($gameid);
+        return Database::update(
+            "games",
+            array("locked","userid"),
+            array(0,$userid),
+            array("gameid=gameidorigin", "gameid = $gameid")
+        );
+    }
+
+    private static function saveEntry($gameid)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
 
         $result = Database::select(
             "games",
@@ -53,19 +87,5 @@ class Games
             array("gameidorigin","name","link","comment","modification","userid","locked"),
             $result
         );
-
-        return Database::update("games", $columns, $values, array("gameid=gameidorigin", "gameidorigin=$gameid"));
-    }
-
-    public static function lock($gameid)
-    {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
-        return Database::update("games", array("locked"), array(1), array("gameid=gameidorigin", "gameid = '$gameid'"));
-    }
-
-    public static function unlock($gameid)
-    {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
-        return Database::update("games", array("locked"), array(0), array("gameid=gameidorigin", "gameid = '$gameid'"));
     }
 }
