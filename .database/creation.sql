@@ -94,8 +94,8 @@ CREATE TABLE IF NOT EXISTS `completionistv2`.`sessions` (
   `enddate` TIMESTAMP NULL,
   `active` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`sessionid`, `userid`),
-  INDEX `token_idx` (`token` ASC),
   INDEX `fk_sessions_users1_idx` (`userid` ASC),
+  INDEX `token_idx` (`token` ASC),
   CONSTRAINT `fk_sessions_users1`
     FOREIGN KEY (`userid`)
     REFERENCES `completionistv2`.`users` (`useridorigin`)
