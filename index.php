@@ -188,6 +188,10 @@ printf("Payload: token decoded");
 var_dump(TokenHelper::decode($result->token));
 $token = $result->token;
 
+$result = Sessions::select();
+printf("Sessions has: ".$result->rowCount." entries (should be 1)<br/>");
+var_dump($result->rows);
+
 sleep(2);
 
 $result = Sessions::open("test1", "testhash");

@@ -1,5 +1,8 @@
 <?php namespace Completionistv2;
 
+use \DateTime;
+use \DateInterval;
+
 class Sessions
 {
     public static function select($columns = array("*"), $filters = array())
@@ -28,12 +31,14 @@ class Sessions
 
             // There's already a session opened for that user
             if ($check->rowCount==1) {
-                $result = new \stdclass;
-                $result->rowCount = 0;
-                $result->token = $check->rows[0]->token;
+                // Setting new expiration date
+                $result = self::updateExpiration($check->rows[0]->token);
             } else {
                 // Creates token
-                $payload = array("name"=>$user->rows[0]->name);
+                $payload = array(
+                    "exp"   => self::getExpirationDate(),
+                    "name"  => $user->rows[0]->name
+                );
                 $token = TokenHelper::encode($payload);
 
                 $result = Database::insert("sessions", array("token","userid"), array($token, $user->rows[0]->userid));
@@ -57,10 +62,44 @@ class Sessions
     public static function check($token)
     {
         require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\TokenHelper.php";
 
         $result = Database::select("sessions", array("*"), array("active=1", "token='$token'"));
         if ($result->rowCount==1) {
+            $token = TokenHelper::decode($result->rows[0]->token);
+            // Check token for expiration date, and close session if need be.
+            date_default_timezone_set('UTC');
+            if (!(DateTime::createFromFormat("Ymd", $token->exp) > new DateTime())) {
+                self::close($result->rows[0]->token);
+                $result = null;
+            }
+
             return $result;
         }
+    }
+
+    private static function getExpirationDate()
+    {
+        date_default_timezone_set('UTC');
+
+        // Expiration date
+        $expdate = new DateTime();
+        $expdate->add(new DateInterval("P7D"));
+        return $expdate->format("Ymd");
+    }
+
+    private static function updateExpiration($token)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\TokenHelper.php";
+
+        // Updating token
+        $token = TokenHelper::decode($token);
+        $token->exp = self::getExpirationDate();
+        $token = TokenHelper::encode($token);
+        $result = Database::update("sessions", array("token"), array($token));
+        $result->token = $token;
+
+        return $result;
     }
 }

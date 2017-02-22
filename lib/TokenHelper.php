@@ -27,21 +27,26 @@ class TokenHelper
         return implode(".", array($header,$payload,$signature));
     }
 
-    public static function decode($message)
+    public static function decode($token)
     {
         require_once $_SERVER["DOCUMENT_ROOT"]."/lib/Base64Helper.php";
         require_once $_SERVER["DOCUMENT_ROOT"]."/lib/CompletionistException.php";
 
-        list($header, $payload, $signature) = explode(".", $message);
+        list($header, $payload, $signature) = explode(".", $token);
 
-        if (!hash_equals(
-            $signature,
-            Base64Helper::encode(static::getSignature($header, $payload))
-        )) {
+        if (!self::check(array($header, $payload, $signature))) {
             throw new CompletionistException("=== Invalid signature on token");
         }
 
         return json_decode(Base64Helper::decode($payload));
+    }
+
+    public static function check($token = array())
+    {
+        return hash_equals(
+            $token[2],
+            Base64Helper::encode(static::getSignature($token[0], $token[1]))
+        );
     }
 
     private static function getSignature($header, $payload)
