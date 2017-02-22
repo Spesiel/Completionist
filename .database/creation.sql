@@ -152,7 +152,9 @@ DROP TRIGGER IF EXISTS `completionistv2`.`sessions_BEFORE_UPDATE` $$
 USE `completionistv2`$$
 CREATE DEFINER = CURRENT_USER TRIGGER `completionistv2`.`sessions_BEFORE_UPDATE` BEFORE UPDATE ON `sessions` FOR EACH ROW
 BEGIN
-	SET NEW.enddate = CURRENT_TIMESTAMP;
+	IF NEW.active <> OLD.active THEN
+		SET NEW.enddate = CURRENT_TIMESTAMP;
+	END IF;
 END$$
 
 
