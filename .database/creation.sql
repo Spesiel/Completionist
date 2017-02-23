@@ -103,6 +103,61 @@ CREATE TABLE IF NOT EXISTS `completionistv2`.`sessions` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `completionistv2`.`friends`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `completionistv2`.`friends` ;
+
+CREATE TABLE IF NOT EXISTS `completionistv2`.`friends` (
+  `friendid` BIGINT UNSIGNED NOT NULL,
+  `userid` BIGINT UNSIGNED NOT NULL,
+  `status` TINYINT(1) NULL,
+  `date` TIMESTAMP NULL,
+  PRIMARY KEY (`friendid`, `userid`),
+  INDEX `fk_friends_users2_idx` (`userid` ASC),
+  CONSTRAINT `fk_friends_users1`
+    FOREIGN KEY (`friendid`)
+    REFERENCES `completionistv2`.`users` (`useridorigin`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_friends_users2`
+    FOREIGN KEY (`userid`)
+    REFERENCES `completionistv2`.`users` (`useridorigin`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `completionistv2`.`messages`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `completionistv2`.`messages` ;
+
+CREATE TABLE IF NOT EXISTS `completionistv2`.`messages` (
+  `messageid` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `touserid` BIGINT UNSIGNED NOT NULL,
+  `fromuserid` BIGINT UNSIGNED NOT NULL,
+  `title` VARCHAR(255) NULL,
+  `body` TEXT NOT NULL,
+  `sent` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `opened` TIMESTAMP NULL,
+  `deleted` TIMESTAMP NULL,
+  PRIMARY KEY (`messageid`, `touserid`, `fromuserid`),
+  INDEX `fk_messages_users1_idx` (`fromuserid` ASC),
+  INDEX `fk_messages_users2_idx` (`touserid` ASC),
+  CONSTRAINT `fk_messages_usersfrom`
+    FOREIGN KEY (`fromuserid`)
+    REFERENCES `completionistv2`.`users` (`useridorigin`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_messages_usersto`
+    FOREIGN KEY (`touserid`)
+    REFERENCES `completionistv2`.`users` (`useridorigin`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 USE `completionistv2`;
 
 DELIMITER $$
