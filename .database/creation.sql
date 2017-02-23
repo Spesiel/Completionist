@@ -110,11 +110,11 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `completionistv2`.`friends` ;
 
 CREATE TABLE IF NOT EXISTS `completionistv2`.`friends` (
-  `friendid` BIGINT UNSIGNED NOT NULL,
   `userid` BIGINT UNSIGNED NOT NULL,
+  `friendid` BIGINT UNSIGNED NOT NULL,
   `status` TINYINT(1) NULL,
   `date` TIMESTAMP NULL,
-  PRIMARY KEY (`friendid`, `userid`),
+  PRIMARY KEY (`userid`, `friendid`),
   INDEX `fk_friends_users2_idx` (`userid` ASC),
   CONSTRAINT `fk_friends_users1`
     FOREIGN KEY (`friendid`)
