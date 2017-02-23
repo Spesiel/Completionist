@@ -112,7 +112,7 @@ DROP TABLE IF EXISTS `completionistv2`.`friends` ;
 CREATE TABLE IF NOT EXISTS `completionistv2`.`friends` (
   `userid` BIGINT UNSIGNED NOT NULL,
   `friendid` BIGINT UNSIGNED NOT NULL,
-  `status` TINYINT(1) NULL,
+  `status` TINYINT(1) NOT NULL DEFAULT 0,
   `date` TIMESTAMP NULL,
   PRIMARY KEY (`userid`, `friendid`),
   INDEX `fk_friends_users2_idx` (`userid` ASC),
@@ -136,14 +136,14 @@ DROP TABLE IF EXISTS `completionistv2`.`messages` ;
 
 CREATE TABLE IF NOT EXISTS `completionistv2`.`messages` (
   `messageid` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `touserid` BIGINT UNSIGNED NOT NULL,
   `fromuserid` BIGINT UNSIGNED NOT NULL,
+  `touserid` BIGINT UNSIGNED NOT NULL,
   `title` VARCHAR(255) NULL,
   `body` TEXT NOT NULL,
   `sent` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `opened` TIMESTAMP NULL,
   `deleted` TIMESTAMP NULL,
-  PRIMARY KEY (`messageid`, `touserid`, `fromuserid`),
+  PRIMARY KEY (`messageid`, `fromuserid`, `touserid`),
   INDEX `fk_messages_users1_idx` (`fromuserid` ASC),
   INDEX `fk_messages_users2_idx` (`touserid` ASC),
   CONSTRAINT `fk_messages_usersfrom`
@@ -210,6 +210,17 @@ BEGIN
 	IF NEW.active <> OLD.active THEN
 		SET NEW.enddate = CURRENT_TIMESTAMP;
 	END IF;
+END$$
+
+
+USE `completionistv2`$$
+DROP TRIGGER IF EXISTS `completionistv2`.`friends_BEFORE_UPDATE` $$
+USE `completionistv2`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `completionistv2`.`friends_BEFORE_UPDATE` BEFORE UPDATE ON `friends` FOR EACH ROW
+BEGIN
+	IF(OLD.status <> NEW.status) THEN
+		SET NEW.date = CURRENT_TIMESTAMP;
+    END IF;
 END$$
 
 

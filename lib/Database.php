@@ -10,7 +10,8 @@ class Database
         "users"     => array("name","email","hash"),
         "games"     => array("name","link","comment","userid"),
         "sessions"  => array("token","userid"),
-        "bookmarks" => array("userid","gameid")
+        "bookmarks" => array("userid","gameid"),
+        "friends"   => array("friendid","userid")
     );
 
     public static function select($table = "", $columns = array("*"), $filters = array())
