@@ -5,6 +5,7 @@ use \PDO;
 const TABLES = array(
     "bookmarks" => false,
     "friends"   => true,
+    "messages"  => true,
     "sessions"  => true,
     "games"     => true,
     "users"     => true
