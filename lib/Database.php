@@ -11,7 +11,12 @@ class Database
         "games"     => array("name","link","comment","userid"),
         "sessions"  => array("token","userid"),
         "bookmarks" => array("userid","gameid"),
-        "friends"   => array("friendid","userid")
+        "friends"   => array("friendid","userid"),
+        "messages"  => array("fromuserid","touserid","title","body")
+    );
+
+    const KEYWORDS = array(
+        "CURRENT_TIMESTAMP" => "CURRENT_TIMESTAMP"
     );
 
     public static function select($table = "", $columns = array("*"), $filters = array())
@@ -47,7 +52,11 @@ class Database
         while (count($columns)) {
             $col = array_pop($columns);
             $val = array_pop($values);
-            $args[] = $col."='$val'";
+            if (empty(self::KEYWORDS[$val])) {
+                $args[] = $col."='$val'";
+            } else {
+                $args[] = $col."=$val";
+            }
         }
         $query .= implode(",", $args)
             .(!empty($filters)?" WHERE ".implode(" AND ", $filters):"");
