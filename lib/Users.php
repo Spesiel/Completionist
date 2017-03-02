@@ -2,11 +2,23 @@
 
 class Users
 {
+    const ROLES = array(
+        127 => "admin",
+         63 => "poweruser",
+          1 => "user"
+    );
+
     public static function select($columns = array("*"), $filters = array())
     {
         require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
 
-        return Database::select("users", $columns, $filters);
+        $result = Database::select("users", $columns, $filters);
+
+        foreach ($result->rows as $row) {
+            $row->role = self::ROLES[($row->role)];
+        }
+
+        return $result;
     }
 
     public static function insert($name, $email, $password)
@@ -78,16 +90,37 @@ class Users
         );
     }
 
+    public static function getRole($userid)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+
+        $roles = Database::select("users", array("role"), array("userid=$userid","useridorigin=userid"));
+        return self::ROLES[($roles->rows[0]->role)];
+    }
+
+    public static function setRole($userid, $role)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+
+        self::saveEntry($userid);
+        return Database::update(
+            "users",
+            array("role"),
+            array(array_search($role, self::ROLES)),
+            array("userid=useridorigin", "useridorigin=$userid")
+        );
+    }
+
     private static function saveEntry($userid)
     {
         require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
 
         $result = Database::select(
             "users",
-            array("useridorigin","name","email","hash","modification","active"),
+            array("useridorigin","name","email","hash","modification","active","role"),
             array("userid=useridorigin", "useridorigin=$userid")
         );
         $result = json_decode(json_encode($result->rows[0]), true);
-        Database::insert("users", array("useridorigin","name","email","hash","modification","active"), $result);
+        Database::insert("users", array("useridorigin","name","email","hash","modification","active","role"), $result);
     }
 }
