@@ -21,7 +21,7 @@ class Sessions
 
         $hash = PasswordHelper::encode($password);
         $user = Users::select(
-            array("useridorigin as userid,name,hash"),
+            array("useridorigin as userid,name,hash,role"),
             array("userid=useridorigin","active=1","name='$name'")
         );
 

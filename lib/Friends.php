@@ -60,7 +60,7 @@ class Friends
         return Database::update(
             "friends",
             array("status"),
-            array(true),
+            array(1),
             array("userid=$friendid","friendid=$userid")
         );
     }
