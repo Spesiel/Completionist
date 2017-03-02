@@ -1,23 +1,25 @@
-<?php namespace Completionist;
+<?php namespace Completionist\Dao;
 
 use \DateTime;
 use \DateInterval;
+use \Completionist\Helper\PasswordHelper as PasswordHelper;
+use \Completionist\Helper\TokenHelper as TokenHelper;
 
 class Sessions
 {
     public static function select($columns = array("*"), $filters = array())
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         return Database::select("sessions", $columns, $filters);
     }
 
     public static function open($name, $password)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\PasswordHelper.php";
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\TokenHelper.php";
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Users.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\PasswordHelper.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\TokenHelper.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
 
         $hash = PasswordHelper::encode($password);
         $user = Users::select(
@@ -51,7 +53,7 @@ class Sessions
 
     public static function close($token)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         $result = Database::select("sessions", array("*"), array("token='$token'"));
         if ($result->rowCount==1) {
@@ -61,8 +63,8 @@ class Sessions
 
     public static function check($token)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\TokenHelper.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\TokenHelper.php";
 
         $result = Database::select("sessions", array("*"), array("active=1", "token='$token'"));
         if ($result->rowCount==1) {
@@ -90,8 +92,8 @@ class Sessions
 
     private static function updateExpiration($token)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\TokenHelper.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\TokenHelper.php";
 
         // Updating token
         $token = TokenHelper::decode($token);

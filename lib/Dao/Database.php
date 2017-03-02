@@ -1,4 +1,4 @@
-<?php namespace Completionist;
+<?php namespace Completionist\Dao;
 
 use \InvalidArgumentException;
 
@@ -102,7 +102,7 @@ class Database
 
     private static function execute($query)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."/lib/CompletionistException.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\CompletionistException.php";
 
         $connection = new PDO(
             "mysql:host=localhost;dbname=completionist;charset=utf8mb4",

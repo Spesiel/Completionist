@@ -1,10 +1,10 @@
-<?php namespace Completionist;
+<?php namespace Completionist\Dao;
 
 class Messages
 {
     public static function select($columns = array("*"), $filters = array())
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         return Database::select("messages", $columns, $filters);
     }
@@ -23,7 +23,7 @@ class Messages
 
     public static function send($from, $to, $title, $body)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         return Database::insert(
             "messages",
@@ -34,7 +34,7 @@ class Messages
 
     public static function open($userid, $messageid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         Database::update(
             "messages",
@@ -48,7 +48,7 @@ class Messages
 
     public static function delete($userid, $messageid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         return Database::update(
             "messages",

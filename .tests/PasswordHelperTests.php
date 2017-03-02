@@ -1,9 +1,11 @@
 <?php namespace Completionist\Tests;
 
+use Completionist\Helper\PasswordHelper as PasswordHelper;
+
 /***********************************************
 * Tests on passwordHelper
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\PasswordHelper.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\PasswordHelper.php";
 printf("<h1>PasswordHelper</h1><hr/>");
 
 $password = "testing the capabilities of encoding passwords";

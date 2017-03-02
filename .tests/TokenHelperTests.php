@@ -1,9 +1,11 @@
 <?php namespace Completionist\Tests;
 
+use Completionist\Helper\TokenHelper as TokenHelper;
+
 /***********************************************
 * Tests on tokenHelper
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\TokenHelper.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\TokenHelper.php";
 printf("<h1>TokenHelper</h1><hr/>");
 
 printf("Payload: name is test");

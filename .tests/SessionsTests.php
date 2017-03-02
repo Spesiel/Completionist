@@ -1,10 +1,13 @@
 <?php namespace Completionist\Tests;
 
+use Completionist\Dao\Sessions as Sessions;
+use Completionist\Helper\TokenHelper as TokenHelper;
+
 /***********************************************
 * Tests on sessions select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Sessions.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\TokenHelper.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Sessions.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\TokenHelper.php";
 printf("<h1>Sessions select/insert/update</h1><hr/>");
 
 $result = Sessions::select();

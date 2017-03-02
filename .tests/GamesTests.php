@@ -1,9 +1,11 @@
 <?php namespace Completionist\Tests;
 
+use Completionist\Dao\Games as Games;
+
 /***********************************************
 * Tests on games select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Games.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Games.php";
 printf("<h1>Games select/insert/update</h1><hr/>");
 
 $result = Games::select();

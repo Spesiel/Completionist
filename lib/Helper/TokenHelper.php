@@ -1,4 +1,4 @@
-<?php namespace Completionist;
+<?php namespace Completionist\Helper;
 
 /**
  * JSON Web Token implementation, based on this spec:
@@ -13,7 +13,7 @@ class TokenHelper
 
     public static function encode($payload)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."/lib/Base64Helper.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\Base64Helper.php";
 
         $header = array(
             "typ"=>"jwt",
@@ -29,8 +29,8 @@ class TokenHelper
 
     public static function decode($token)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."/lib/Base64Helper.php";
-        require_once $_SERVER["DOCUMENT_ROOT"]."/lib/CompletionistException.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\Base64Helper.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\CompletionistException.php";
 
         list($header, $payload, $signature) = explode(".", $token);
 
@@ -43,6 +43,8 @@ class TokenHelper
 
     public static function check($token = array())
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\Base64Helper.php";
+
         return hash_equals(
             $token[2],
             Base64Helper::encode(static::getSignature($token[0], $token[1]))

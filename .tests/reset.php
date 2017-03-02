@@ -11,7 +11,7 @@ const TABLES = array(
     "users"     => true
 );
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/lib/CompletionistException.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\CompletionistException.php";
 
 foreach (TABLES as $key => $value) {
     plop("SET foreign_key_checks = 0; TRUNCATE TABLE $key; SET foreign_key_checks = 1;", $key);

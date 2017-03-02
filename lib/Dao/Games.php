@@ -1,17 +1,17 @@
-<?php namespace Completionist;
+<?php namespace Completionist\Dao;
 
 class Games
 {
     public static function select($columns = array("*"), $filters = array())
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         return Database::select("games", $columns, $filters);
     }
 
     public static function insert($name, $link, $comment, $userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         return Database::insert(
             "games",
@@ -22,7 +22,7 @@ class Games
 
     public static function update($gameid, $name, $link, $comment, $userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         $columns = array();
         $values = array();
@@ -48,7 +48,7 @@ class Games
 
     public static function lock($gameid, $userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         self::saveEntry($gameid);
         return Database::update(
@@ -61,7 +61,7 @@ class Games
 
     public static function unlock($gameid, $userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         self::saveEntry($gameid);
         return Database::update(
@@ -74,7 +74,7 @@ class Games
 
     private static function saveEntry($gameid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         $result = Database::select(
             "games",

@@ -1,4 +1,4 @@
-<?php namespace Completionist;
+<?php namespace Completionist\Helper;
 
 class Base64Helper
 {

@@ -5,7 +5,7 @@ use Completionist\Dao\Users as Users;
 /***********************************************
 * Adding users
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Users.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
 printf("<h1>Users insert</h1><hr/>");
 
 $result = Users::select();

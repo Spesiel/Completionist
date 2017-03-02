@@ -1,9 +1,12 @@
 <?php namespace Completionist\Tests;
 
+use \Completionist\Dao\Users as Users;
+use \Completionist\Dao\Friends as Friends;
+
 /***********************************************
 * Tests on friends select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Users.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
 printf("<h1>Users insert</h1><hr/>");
 
 $result = Users::select();
@@ -24,7 +27,7 @@ var_dump($result->rows);
 /***********************************************
 * Tests on friends select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Friends.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Friends.php";
 printf("<h1>Friends select/insert/update</h1><hr/>");
 
 $result = Friends::select();

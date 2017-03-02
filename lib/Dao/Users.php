@@ -1,4 +1,6 @@
-<?php namespace Completionist;
+<?php namespace Completionist\Dao;
+
+use \Completionist\Helper\PasswordHelper as PasswordHelper;
 
 class Users
 {
@@ -10,7 +12,7 @@ class Users
 
     public static function select($columns = array("*"), $filters = array())
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         $result = Database::select("users", $columns, $filters);
 
@@ -23,8 +25,8 @@ class Users
 
     public static function insert($name, $email, $password)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\PasswordHelper.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\PasswordHelper.php";
         $hash = PasswordHelper::encode($password);
 
         if (empty($email)) {
@@ -40,8 +42,8 @@ class Users
 
     public static function update($userid, $name, $email, $password)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\PasswordHelper.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\PasswordHelper.php";
         $hash = PasswordHelper::encode($password);
 
         $columns = array();
@@ -66,7 +68,7 @@ class Users
 
     public static function activate($userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         self::saveEntry($userid);
         return Database::update(
@@ -79,7 +81,7 @@ class Users
 
     public static function deactivate($userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         self::saveEntry($userid);
         return Database::update(
@@ -92,7 +94,7 @@ class Users
 
     public static function getRole($userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         $roles = Database::select("users", array("role"), array("userid=$userid","useridorigin=userid"));
         return self::ROLES[($roles->rows[0]->role)];
@@ -100,7 +102,7 @@ class Users
 
     public static function setRole($userid, $role)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         self::saveEntry($userid);
         return Database::update(
@@ -113,7 +115,7 @@ class Users
 
     private static function saveEntry($userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         $result = Database::select(
             "users",

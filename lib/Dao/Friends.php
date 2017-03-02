@@ -1,10 +1,10 @@
-<?php namespace Completionist;
+<?php namespace Completionist\Dao;
 
 class Friends
 {
     public static function select($columns = array("*"), $filters = array())
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         return Database::select("friends", $columns, $filters);
     }
@@ -44,7 +44,7 @@ class Friends
 
     public static function request($userid, $friendid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         return Database::insert(
             "friends",
@@ -55,7 +55,7 @@ class Friends
 
     public static function accept($userid, $friendid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         return Database::update(
             "friends",
@@ -67,7 +67,7 @@ class Friends
 
     public static function remove($userid, $friendid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
         $result1 = Database::delete(
             "friends",
