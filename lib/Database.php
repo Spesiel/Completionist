@@ -52,7 +52,7 @@ class Database
         while (count($columns)) {
             $col = array_pop($columns);
             $val = array_pop($values);
-            if (!is_integer($val) && empty(self::KEYWORDS[$val])) {
+            if (!array_key_exists($val, self::KEYWORDS)) {
                 $args[] = $col."='$val'";
             } else {
                 $args[] = $col."=$val";
