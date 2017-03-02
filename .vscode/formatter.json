@@ -34,6 +34,7 @@
         "indent_size": 4,
         "indent_char": " ",
         "indent_character": " ",
+        "eol": "\n",
         "end_with_newline": true
     }
 }
