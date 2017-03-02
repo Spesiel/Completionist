@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `completionist`.`users` (
   `email` VARCHAR(255) NULL,
   `modification` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `active` TINYINT(1) NOT NULL DEFAULT 1,
+  `role` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`userid`, `useridorigin`, `name`),
   INDEX `useridorigin_idx` (`useridorigin` ASC))
 ENGINE = InnoDB;
