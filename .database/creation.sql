@@ -225,6 +225,13 @@ END$$
 
 
 DELIMITER ;
+SET SQL_MODE = '';
+GRANT USAGE ON *.* TO completionist;
+ DROP USER completionist;
+SET SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+CREATE USER 'completionist' IDENTIFIED BY 'default';
+
+GRANT ALL ON `completionist`.* TO 'completionist';
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
