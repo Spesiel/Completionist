@@ -5,22 +5,22 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema completionistv2
+-- Schema completionist
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `completionistv2` ;
+DROP SCHEMA IF EXISTS `completionist` ;
 
 -- -----------------------------------------------------
--- Schema completionistv2
+-- Schema completionist
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `completionistv2` DEFAULT CHARACTER SET latin1 ;
-USE `completionistv2` ;
+CREATE SCHEMA IF NOT EXISTS `completionist` DEFAULT CHARACTER SET latin1 ;
+USE `completionist` ;
 
 -- -----------------------------------------------------
--- Table `completionistv2`.`users`
+-- Table `completionist`.`users`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `completionistv2`.`users` ;
+DROP TABLE IF EXISTS `completionist`.`users` ;
 
-CREATE TABLE IF NOT EXISTS `completionistv2`.`users` (
+CREATE TABLE IF NOT EXISTS `completionist`.`users` (
   `userid` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `useridorigin` BIGINT(20) UNSIGNED NOT NULL,
   `name` VARCHAR(255) NOT NULL,
@@ -34,11 +34,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `completionistv2`.`games`
+-- Table `completionist`.`games`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `completionistv2`.`games` ;
+DROP TABLE IF EXISTS `completionist`.`games` ;
 
-CREATE TABLE IF NOT EXISTS `completionistv2`.`games` (
+CREATE TABLE IF NOT EXISTS `completionist`.`games` (
   `gameid` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gameidorigin` BIGINT(20) UNSIGNED NOT NULL,
   `name` VARCHAR(255) NOT NULL,
@@ -52,41 +52,41 @@ CREATE TABLE IF NOT EXISTS `completionistv2`.`games` (
   INDEX `fk_games_users_idx` (`userid` ASC),
   CONSTRAINT `fk_games_users`
     FOREIGN KEY (`userid`)
-    REFERENCES `completionistv2`.`users` (`useridorigin`)
+    REFERENCES `completionist`.`users` (`useridorigin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `completionistv2`.`bookmarks`
+-- Table `completionist`.`bookmarks`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `completionistv2`.`bookmarks` ;
+DROP TABLE IF EXISTS `completionist`.`bookmarks` ;
 
-CREATE TABLE IF NOT EXISTS `completionistv2`.`bookmarks` (
+CREATE TABLE IF NOT EXISTS `completionist`.`bookmarks` (
   `userid` BIGINT(20) UNSIGNED NOT NULL,
   `gameid` BIGINT(20) UNSIGNED NOT NULL,
   PRIMARY KEY (`userid`, `gameid`),
   INDEX `fk_bookmarks_games1_idx` (`gameid` ASC),
   CONSTRAINT `fk_bookmarks_users1`
     FOREIGN KEY (`userid`)
-    REFERENCES `completionistv2`.`users` (`useridorigin`)
+    REFERENCES `completionist`.`users` (`useridorigin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_bookmarks_games1`
     FOREIGN KEY (`gameid`)
-    REFERENCES `completionistv2`.`games` (`gameidorigin`)
+    REFERENCES `completionist`.`games` (`gameidorigin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `completionistv2`.`sessions`
+-- Table `completionist`.`sessions`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `completionistv2`.`sessions` ;
+DROP TABLE IF EXISTS `completionist`.`sessions` ;
 
-CREATE TABLE IF NOT EXISTS `completionistv2`.`sessions` (
+CREATE TABLE IF NOT EXISTS `completionist`.`sessions` (
   `sessionid` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `userid` BIGINT(20) UNSIGNED NOT NULL,
   `token` VARCHAR(255) NOT NULL,
@@ -98,18 +98,18 @@ CREATE TABLE IF NOT EXISTS `completionistv2`.`sessions` (
   INDEX `token_idx` (`token` ASC),
   CONSTRAINT `fk_sessions_users1`
     FOREIGN KEY (`userid`)
-    REFERENCES `completionistv2`.`users` (`useridorigin`)
+    REFERENCES `completionist`.`users` (`useridorigin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `completionistv2`.`friends`
+-- Table `completionist`.`friends`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `completionistv2`.`friends` ;
+DROP TABLE IF EXISTS `completionist`.`friends` ;
 
-CREATE TABLE IF NOT EXISTS `completionistv2`.`friends` (
+CREATE TABLE IF NOT EXISTS `completionist`.`friends` (
   `userid` BIGINT UNSIGNED NOT NULL,
   `friendid` BIGINT UNSIGNED NOT NULL,
   `status` TINYINT(1) NOT NULL DEFAULT 0,
@@ -118,23 +118,23 @@ CREATE TABLE IF NOT EXISTS `completionistv2`.`friends` (
   INDEX `fk_friends_users2_idx` (`userid` ASC),
   CONSTRAINT `fk_friends_users1`
     FOREIGN KEY (`friendid`)
-    REFERENCES `completionistv2`.`users` (`useridorigin`)
+    REFERENCES `completionist`.`users` (`useridorigin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_friends_users2`
     FOREIGN KEY (`userid`)
-    REFERENCES `completionistv2`.`users` (`useridorigin`)
+    REFERENCES `completionist`.`users` (`useridorigin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `completionistv2`.`messages`
+-- Table `completionist`.`messages`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `completionistv2`.`messages` ;
+DROP TABLE IF EXISTS `completionist`.`messages` ;
 
-CREATE TABLE IF NOT EXISTS `completionistv2`.`messages` (
+CREATE TABLE IF NOT EXISTS `completionist`.`messages` (
   `messageid` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
   `fromuserid` BIGINT UNSIGNED NOT NULL,
   `touserid` BIGINT UNSIGNED NOT NULL,
@@ -148,24 +148,24 @@ CREATE TABLE IF NOT EXISTS `completionistv2`.`messages` (
   INDEX `fk_messages_users2_idx` (`touserid` ASC),
   CONSTRAINT `fk_messages_usersfrom`
     FOREIGN KEY (`fromuserid`)
-    REFERENCES `completionistv2`.`users` (`useridorigin`)
+    REFERENCES `completionist`.`users` (`useridorigin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_messages_usersto`
     FOREIGN KEY (`touserid`)
-    REFERENCES `completionistv2`.`users` (`useridorigin`)
+    REFERENCES `completionist`.`users` (`useridorigin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-USE `completionistv2`;
+USE `completionist`;
 
 DELIMITER $$
 
-USE `completionistv2`$$
-DROP TRIGGER IF EXISTS `completionistv2`.`users_BEFORE_INSERT` $$
-USE `completionistv2`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `completionistv2`.`users_BEFORE_INSERT` BEFORE INSERT ON `users` FOR EACH ROW
+USE `completionist`$$
+DROP TRIGGER IF EXISTS `completionist`.`users_BEFORE_INSERT` $$
+USE `completionist`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `completionist`.`users_BEFORE_INSERT` BEFORE INSERT ON `users` FOR EACH ROW
 BEGIN
 	IF(NEW.useridorigin IS NULL) THEN
 		SET NEW.useridorigin = (SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'completionistv2' AND TABLE_NAME = 'users');
@@ -173,19 +173,19 @@ BEGIN
 END$$
 
 
-USE `completionistv2`$$
-DROP TRIGGER IF EXISTS `completionistv2`.`users_BEFORE_UPDATE` $$
-USE `completionistv2`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `completionistv2`.`users_BEFORE_UPDATE` BEFORE UPDATE ON `users` FOR EACH ROW
+USE `completionist`$$
+DROP TRIGGER IF EXISTS `completionist`.`users_BEFORE_UPDATE` $$
+USE `completionist`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `completionist`.`users_BEFORE_UPDATE` BEFORE UPDATE ON `users` FOR EACH ROW
 BEGIN
 	SET NEW.modification = CURRENT_TIMESTAMP;
 END$$
 
 
-USE `completionistv2`$$
-DROP TRIGGER IF EXISTS `completionistv2`.`games_BEFORE_INSERT` $$
-USE `completionistv2`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `completionistv2`.`games_BEFORE_INSERT` BEFORE INSERT ON `games` FOR EACH ROW
+USE `completionist`$$
+DROP TRIGGER IF EXISTS `completionist`.`games_BEFORE_INSERT` $$
+USE `completionist`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `completionist`.`games_BEFORE_INSERT` BEFORE INSERT ON `games` FOR EACH ROW
 BEGIN
 	IF(NEW.gameidorigin IS NULL) THEN
 		SET NEW.gameidorigin = (SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'completionistv2' AND TABLE_NAME = 'games');
@@ -193,19 +193,19 @@ BEGIN
 END$$
 
 
-USE `completionistv2`$$
-DROP TRIGGER IF EXISTS `completionistv2`.`games_BEFORE_UPDATE` $$
-USE `completionistv2`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `completionistv2`.`games_BEFORE_UPDATE` BEFORE UPDATE ON `games` FOR EACH ROW
+USE `completionist`$$
+DROP TRIGGER IF EXISTS `completionist`.`games_BEFORE_UPDATE` $$
+USE `completionist`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `completionist`.`games_BEFORE_UPDATE` BEFORE UPDATE ON `games` FOR EACH ROW
 BEGIN
 	SET NEW.modification = CURRENT_TIMESTAMP;
 END$$
 
 
-USE `completionistv2`$$
-DROP TRIGGER IF EXISTS `completionistv2`.`sessions_BEFORE_UPDATE` $$
-USE `completionistv2`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `completionistv2`.`sessions_BEFORE_UPDATE` BEFORE UPDATE ON `sessions` FOR EACH ROW
+USE `completionist`$$
+DROP TRIGGER IF EXISTS `completionist`.`sessions_BEFORE_UPDATE` $$
+USE `completionist`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `completionist`.`sessions_BEFORE_UPDATE` BEFORE UPDATE ON `sessions` FOR EACH ROW
 BEGIN
 	IF NEW.active <> OLD.active THEN
 		SET NEW.enddate = CURRENT_TIMESTAMP;
@@ -213,10 +213,10 @@ BEGIN
 END$$
 
 
-USE `completionistv2`$$
-DROP TRIGGER IF EXISTS `completionistv2`.`friends_BEFORE_UPDATE` $$
-USE `completionistv2`$$
-CREATE DEFINER = CURRENT_USER TRIGGER `completionistv2`.`friends_BEFORE_UPDATE` BEFORE UPDATE ON `friends` FOR EACH ROW
+USE `completionist`$$
+DROP TRIGGER IF EXISTS `completionist`.`friends_BEFORE_UPDATE` $$
+USE `completionist`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `completionist`.`friends_BEFORE_UPDATE` BEFORE UPDATE ON `friends` FOR EACH ROW
 BEGIN
 	IF(OLD.status <> NEW.status) THEN
 		SET NEW.date = CURRENT_TIMESTAMP;
