@@ -1,4 +1,4 @@
-<?php namespace Completionistv2;
+<?php namespace Completionist;
 
 use \InvalidArgumentException;
 
@@ -105,8 +105,8 @@ class Database
         require_once $_SERVER["DOCUMENT_ROOT"]."/lib/CompletionistException.php";
 
         $connection = new PDO(
-            "mysql:host=localhost;dbname=completionistv2;charset=utf8mb4",
-            "completionistv2",
+            "mysql:host=localhost;dbname=completionist;charset=utf8mb4",
+            "completionist",
             "default",
             array(
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION

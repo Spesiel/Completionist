@@ -1,4 +1,4 @@
-<?php namespace Completionistv2;
+<?php namespace Completionist;
 
 class PasswordHelper
 {

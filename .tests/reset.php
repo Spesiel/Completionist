@@ -1,4 +1,4 @@
-<?php namespace Completionistv2;
+<?php namespace Completionist;
 
 use \PDO;
 
@@ -24,8 +24,8 @@ foreach (TABLES as $key => $value) {
 function plop($query, $key)
 {
     $connection = new PDO(
-        "mysql:host=localhost;dbname=completionistv2;charset=utf8mb4",
-        "completionistv2",
+        "mysql:host=localhost;dbname=completionist;charset=utf8mb4",
+        "completionist",
         "default",
         array(
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION

@@ -1,4 +1,4 @@
-<?php namespace Completionistv2;
+<?php namespace Completionist;
 
 printf("<h1>Tests</h1><hr/><hr/>");
 

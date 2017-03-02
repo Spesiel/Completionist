@@ -1,4 +1,4 @@
-<?php namespace Completionistv2;
+<?php namespace Completionist;
 
 /**
  * JSON Web Token implementation, based on this spec:
