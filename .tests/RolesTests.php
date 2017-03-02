@@ -1,4 +1,6 @@
-<?php namespace Completionist;
+<?php namespace Completionist\Tests;
+
+use Completionist\Dao\Users as Users;
 
 /***********************************************
 * Adding users

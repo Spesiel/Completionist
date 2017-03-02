@@ -1,4 +1,4 @@
-<?php namespace Completionist;
+<?php namespace Completionist\Tests;
 
 /***********************************************
 * Tests on games select/insert/update
