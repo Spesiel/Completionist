@@ -8,12 +8,13 @@ use \Completionist\CompletionistException as CompletionistException;
 class Database
 {
     const TABLES = array(
-        "users"     => array("name","email","hash"),
-        "games"     => array("name","link","comment","userid"),
-        "sessions"  => array("token","userid"),
-        "bookmarks" => array("userid","gameid"),
-        "friends"   => array("friendid","userid"),
-        "messages"  => array("fromuserid","touserid","title","body")
+        "users"         => array("name","email","hash"),
+        "games"         => array("name","link","comment","userid"),
+        "sessions"      => array("token","userid"),
+        "bookmarks"     => array("userid","gameid"),
+        "friends"       => array("friendid","userid"),
+        "messages"      => array("fromuserid","touserid","title","body"),
+        "completion"    => array("userid","gameid","status","comment")
     );
 
     const KEYWORDS = array(
