@@ -8,10 +8,15 @@ class Friends
          -63 => "blocked"
     );
 
+    protected function __construct()
+    {
+        spl_autoload_register(function ($classname) {
+            require_once $_SERVER["DOCUMENT_ROOT"]."\\lib\\Dao\\".$classname.".php";
+        });
+    }
+
     public static function select($columns = array("*"), $filters = array())
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         $result = Database::select("friends", $columns, $filters);
 
         foreach ($result->rows as $row) {
@@ -59,8 +64,6 @@ class Friends
 
     public static function request($userid, $friendid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         $isBlocked1 = self::select(
             array("*"),
             array("userid=$friendid","friendid=$userid",array_search("blocked", self::STATUS))
@@ -86,8 +89,6 @@ class Friends
 
     public static function accept($userid, $friendid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         return Database::update(
             "friends",
             array("status"),
@@ -98,8 +99,6 @@ class Friends
 
     public static function block($userid, $friendid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         self::remove($userid, $friendid);
         self::remove($friendid, $userid);
 
@@ -112,8 +111,6 @@ class Friends
 
     public static function remove($userid, $friendid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         $result1 = Database::delete(
             "friends",
             array("userid=$userid","friendid=$friendid")
