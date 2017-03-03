@@ -3,9 +3,9 @@
 class Friends
 {
     const STATUS = array(
-        127 => "accepted",
-         63 => "requested",
-          1 => "blocked"
+         127 => "accepted",
+          63 => "requested",
+         -63 => "blocked"
     );
 
     public static function select($columns = array("*"), $filters = array())
@@ -23,13 +23,16 @@ class Friends
 
     public static function getRequests($userid)
     {
-        return self::select(array("*"), array("friendid=$userid"));
+        return self::select(
+            array("*"),
+            array("friendid=$userid","status=".array_search("requested", self::STATUS))
+        );
     }
 
     public static function getList($userid)
     {
-        $result1 = self::select(array("*"), array("userid=$userid"));
-        $result2 = self::select(array("*"), array("friendid=$userid"));
+        $result1 = self::select(array("*"), array("userid=$userid","status=".array_search("accepted", self::STATUS)));
+        $result2 = self::select(array("*"), array("friendid=$userid","status=".array_search("accepted", self::STATUS)));
 
         $result = new \stdclass;
         $result->rowCount = $result1->rowCount+$result2->rowCount;
@@ -58,11 +61,27 @@ class Friends
     {
         require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
-        return Database::insert(
-            "friends",
-            array("userid","friendid","status"),
-            array($userid,$friendid,array_search("requested", self::STATUS))
+        $isBlocked1 = self::select(
+            array("*"),
+            array("userid=$friendid","friendid=$userid",array_search("blocked", self::STATUS))
         );
+        $isBlocked2 = self::select(
+            array("*"),
+            array("userid=$userid","friendid=$friendid",array_search("blocked", self::STATUS))
+        );
+        $isBlocked = $isBlocked1->rowCount + $isBlocked2->rowCount;
+
+        if ($isBlocked > 0) {
+            $result = new \stdclass;
+            $result->rowCount = 0;
+            return $result;
+        } else {
+            return Database::insert(
+                "friends",
+                array("userid","friendid","status"),
+                array($userid,$friendid,array_search("requested", self::STATUS))
+            );
+        }
     }
 
     public static function accept($userid, $friendid)
@@ -81,11 +100,13 @@ class Friends
     {
         require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
 
-        return Database::update(
+        self::remove($userid, $friendid);
+        self::remove($friendid, $userid);
+
+        return Database::insert(
             "friends",
-            array("status"),
-            array(array_search("blocked", self::STATUS)),
-            array("userid=$userid","friendid=$friendid")
+            array("userid","friendid","status"),
+            array($userid,$friendid,array_search("blocked", self::STATUS))
         );
     }
 
