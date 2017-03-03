@@ -2,7 +2,7 @@ Things to add:
     Friends:
         ✔ Better Status format @done (3/3/2017, 3:15:14 AM)
         ✔ Ability to block users @done (3/3/2017, 3:15:16 AM)
-        ☐ Test the status and blocking system
+        ✔ Test the status and blocking system @done (3/3/2017, 4:33:19 AM)
     Games:
         ✔ Ability to get a tree for a game @done (3/2/2017, 10:29:10 PM)
 
@@ -12,4 +12,5 @@ Tables to test:
 
 Tables to create:
     ☐ Curators
+    ☐ Completion
     ✘ Roles @cancelled (3/2/2017, 4:04:13 PM) -- It has been integrated into Users
