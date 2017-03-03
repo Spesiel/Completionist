@@ -39,7 +39,8 @@ class Sessions
                 // Creates token
                 $payload = array(
                     "exp"   => self::getExpirationDate(),
-                    "name"  => $user->rows[0]->name
+                    "name"  => $user->rows[0]->name,
+                    "role"  => $user->rows[0]->role
                 );
                 $token = TokenHelper::encode($payload);
 
