@@ -20,6 +20,23 @@ class Games
         );
     }
 
+    public static function insertSub($gameid, $name, $link, $comment, $userid)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
+        $cols = Database::TABLES["games"];
+        $cols[] = "gameidrelated";
+        $vals = array(
+            Database::encodeString($name),
+            Database::encodeString($link),
+            Database::encodeString($comment),
+            $userid,
+            $gameid
+        );
+
+        return Database::insert("games", $cols, $vals);
+    }
+
     public static function update($gameid, $name, $link, $comment, $userid)
     {
         require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
@@ -78,13 +95,13 @@ class Games
 
         $result = Database::select(
             "games",
-            array("gameidorigin","name","link","comment","modification","userid","locked"),
+            array("gameidorigin","gameidrelated","name","link","comment","modification","userid","locked"),
             array("gameid=gameidorigin", "gameidorigin=$gameid")
         );
         $result = json_decode(json_encode($result->rows[0]), true);
         Database::insert(
             "games",
-            array("gameidorigin","name","link","comment","modification","userid","locked"),
+            array("gameidorigin","gameidrelated","name","link","comment","modification","userid","locked"),
             $result
         );
     }

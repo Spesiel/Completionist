@@ -42,18 +42,25 @@ DROP TABLE IF EXISTS `completionist`.`games` ;
 CREATE TABLE IF NOT EXISTS `completionist`.`games` (
   `gameid` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `gameidorigin` BIGINT(20) UNSIGNED NOT NULL,
+  `gameidrelated` BIGINT(20) UNSIGNED NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `link` VARCHAR(127) NULL,
   `comment` TEXT NULL,
   `modification` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `userid` BIGINT(20) UNSIGNED NOT NULL,
   `locked` TINYINT(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`gameid`, `gameidorigin`, `name`, `userid`),
+  PRIMARY KEY (`gameid`, `gameidorigin`, `name`, `userid`, `gameidrelated`),
   INDEX `gameidorigin_idx` (`gameidorigin` ASC),
   INDEX `fk_games_users_idx` (`userid` ASC),
+  INDEX `fk_games_games_idx` (`gameidrelated` ASC),
   CONSTRAINT `fk_games_users`
     FOREIGN KEY (`userid`)
     REFERENCES `completionist`.`users` (`useridorigin`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_games_games`
+    FOREIGN KEY (`gameidrelated`)
+    REFERENCES `completionist`.`games` (`gameidorigin`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -190,6 +197,9 @@ CREATE DEFINER = CURRENT_USER TRIGGER `completionist`.`games_BEFORE_INSERT` BEFO
 BEGIN
 	IF(NEW.gameidorigin IS NULL) THEN
 		SET NEW.gameidorigin = (SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'completionist' AND TABLE_NAME = 'games');
+    END IF;
+	IF(NEW.gameidrelated IS NULL) THEN
+		SET NEW.gameidrelated = (SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'completionist' AND TABLE_NAME = 'games');
     END IF;
 END$$
 
