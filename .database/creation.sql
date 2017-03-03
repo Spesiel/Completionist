@@ -166,6 +166,32 @@ CREATE TABLE IF NOT EXISTS `completionist`.`messages` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `completionist`.`completion`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `completionist`.`completion` ;
+
+CREATE TABLE IF NOT EXISTS `completionist`.`completion` (
+  `userid` BIGINT UNSIGNED NOT NULL,
+  `gameid` BIGINT UNSIGNED NOT NULL,
+  `status` TINYINT(1) NOT NULL,
+  `comment` TEXT NULL,
+  `modification` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`userid`, `gameid`),
+  INDEX `fk_completion_games1_idx` (`gameid` ASC),
+  CONSTRAINT `fk_completion_users1`
+    FOREIGN KEY (`userid`)
+    REFERENCES `completionist`.`users` (`useridorigin`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_completion_games1`
+    FOREIGN KEY (`gameid`)
+    REFERENCES `completionist`.`games` (`gameidorigin`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 USE `completionist`;
 
 DELIMITER $$

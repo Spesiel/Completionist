@@ -5,12 +5,20 @@ Things to add:
         ✔ Test the status and blocking system @done (3/3/2017, 4:33:19 AM)
     Games:
         ✔ Ability to get a tree for a game @done (3/2/2017, 10:29:10 PM)
+    Completion:
+        ☐ Define statuses for tasks progression
+        ☐ Methods for tasks progression
+
+To look up:
+    ☐ Markup language for grail kind of things?
+    ☐ Modify Games table to allow for typing of tree objects?
 
 Tables to test:
     ✔ Friends @done (2/23/2017, 2:23:53 PM)
     ✔ Messages @done (2/26/2017, 11:47:51 AM)
+    ☐ Completion
 
 Tables to create:
     ☐ Curators
-    ☐ Completion
+    ✔ Completion @done (3/3/2017, 3:24:40 PM)
     ✘ Roles @cancelled (3/2/2017, 4:04:13 PM) -- It has been integrated into Users

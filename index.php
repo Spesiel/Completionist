@@ -31,7 +31,7 @@ printf("<hr/><hr/><h1>Reset</h1>");
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/reset.php";
 ***********************************************/
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/FriendsTests.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/GamesTests.php";
 
 printf("<hr/><hr/><h1>Reset</h1>");
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/reset.php";
