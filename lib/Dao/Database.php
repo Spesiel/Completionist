@@ -1,8 +1,9 @@
 <?php namespace Completionist\Dao;
 
 use \InvalidArgumentException;
-
 use \PDO;
+
+use \Completionist\CompletionistException as CompletionistException;
 
 class Database
 {
