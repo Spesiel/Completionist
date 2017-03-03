@@ -2,15 +2,10 @@
 
 class Messages
 {
-    protected function __construct()
-    {
-        spl_autoload_register(function ($classname) {
-            require_once $_SERVER["DOCUMENT_ROOT"]."\\lib\\Dao\\".$classname.".php";
-        });
-    }
-
     public static function select($columns = array("*"), $filters = array())
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
         return Database::select("messages", $columns, $filters);
     }
 
@@ -28,6 +23,8 @@ class Messages
 
     public static function send($from, $to, $title, $body)
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
         return Database::insert(
             "messages",
             array("fromuserid","touserid","title","body"),
@@ -37,6 +34,8 @@ class Messages
 
     public static function open($userid, $messageid)
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
         Database::update(
             "messages",
             array("opened"),
@@ -49,6 +48,8 @@ class Messages
 
     public static function delete($userid, $messageid)
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
         return Database::update(
             "messages",
             array("deleted"),

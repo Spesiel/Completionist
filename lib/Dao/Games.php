@@ -2,20 +2,17 @@
 
 class Games
 {
-    protected function __construct()
-    {
-        spl_autoload_register(function ($classname) {
-            require_once $_SERVER["DOCUMENT_ROOT"]."\\lib\\Dao\\".$classname.".php";
-        });
-    }
-
     public static function select($columns = array("*"), $filters = array())
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
         return Database::select("games", $columns, $filters);
     }
 
     public static function getTree($gameid)
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
         $result = new \stdclass;
 
         return self::recurseTree(array($gameid));
@@ -23,6 +20,8 @@ class Games
 
     public static function insert($name, $link, $comment, $userid)
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
         return Database::insert(
             "games",
             Database::TABLES["games"],
@@ -32,6 +31,8 @@ class Games
 
     public static function insertSub($gameid, $name, $link, $comment, $userid)
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
         $cols = Database::TABLES["games"];
         $cols[] = "gameidrelated";
         $vals = array(
@@ -47,6 +48,8 @@ class Games
 
     public static function update($gameid, $name, $link, $comment, $userid)
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
         $columns = array();
         $values = array();
 
@@ -71,6 +74,8 @@ class Games
 
     public static function lock($gameid, $userid)
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
         self::saveEntry($gameid);
         return Database::update(
             "games",
@@ -82,6 +87,8 @@ class Games
 
     public static function unlock($gameid, $userid)
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
         self::saveEntry($gameid);
         return Database::update(
             "games",
@@ -137,6 +144,8 @@ class Games
 
     private static function saveEntry($gameid)
     {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
         $result = Database::select(
             "games",
             array("gameidorigin","gameidrelated","name","link","comment","modification","userid","locked"),
