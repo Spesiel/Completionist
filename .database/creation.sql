@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `completionist`.`friends` (
   `userid` BIGINT UNSIGNED NOT NULL,
   `friendid` BIGINT UNSIGNED NOT NULL,
   `status` TINYINT(1) NOT NULL DEFAULT 0,
-  `date` TIMESTAMP NULL,
+  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`userid`, `friendid`),
   INDEX `fk_friends_users2_idx` (`userid` ASC),
   CONSTRAINT `fk_friends_users1`
@@ -198,6 +198,7 @@ BEGIN
 	IF(NEW.gameidorigin IS NULL) THEN
 		SET NEW.gameidorigin = (SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'completionist' AND TABLE_NAME = 'games');
     END IF;
+
 	IF(NEW.gameidrelated IS NULL) THEN
 		SET NEW.gameidrelated = (SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'completionist' AND TABLE_NAME = 'games');
     END IF;
