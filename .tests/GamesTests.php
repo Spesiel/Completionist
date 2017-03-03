@@ -11,17 +11,12 @@ printf("<h1>Users insert</h1><hr/>");
 
 $result = Users::select();
 printf("Users has: ".$result->rowCount." entries<br/>");
-var_dump($result->rows);
 
 $result = Users::insert("test1", "", "testhash");
 printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
 
 $result = Users::insert("test2", "", "testhash");
 printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Users::select();
-printf("Users has: ".$result->rowCount." entries (should be 2)<br/>");
-var_dump($result->rows);
 /**********************************************/
 
 /***********************************************
@@ -55,7 +50,32 @@ printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 $result = Games::update(5, "game1 sub updated", "link sub updated", "comment sub updated", 2);
 printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 
+$result = Games::insertSub(5, "game1 sub sub 1", "link sub sub", "comment sub sub", 2);
+printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
+
+$result = Games::insertSub(7, "game1 sub sub 1 leaf 1", "link sub sub leaf", "comment sub sub leaf", 2);
+printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
+
+$result = Games::insertSub(7, "game1 sub sub 1 leaf 2", "link sub sub leaf", "comment sub sub leaf", 2);
+printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
+
+$result = Games::insertSub(5, "game1 sub sub 2", "link sub sub", "comment sub sub", 2);
+printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
+
+$result = Games::insertSub(10, "game1 sub sub 2 leaf 1", "link sub sub leaf", "comment sub sub leaf", 2);
+printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
+
+$result = Games::insertSub(10, "game1 sub sub 2 leaf 2", "link sub sub leaf", "comment sub sub leaf", 2);
+printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
+
+$result = Games::getTree(3);
+printf("Gameid=3 tree:<br/>");
+ini_set('xdebug.var_display_max_depth', -1);
+ini_set('xdebug.var_display_max_children', -1);
+ini_set('xdebug.var_display_max_data', -1);
+var_dump($result);
+
 $result = Games::select();
-printf("Games has: ".$result->rowCount." entries (should be 6)<br/>");
+printf("Games has: ".$result->rowCount." entries (should be 8)<br/>");
 var_dump($result->rows);
 /**********************************************/

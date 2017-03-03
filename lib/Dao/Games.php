@@ -9,6 +9,15 @@ class Games
         return Database::select("games", $columns, $filters);
     }
 
+    public static function getTree($gameid)
+    {
+        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
+
+        $result = new \stdclass;
+
+        return self::recurseTree(array($gameid));
+    }
+
     public static function insert($name, $link, $comment, $userid)
     {
         require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
@@ -87,6 +96,50 @@ class Games
             array(0,$userid),
             array("gameid=gameidorigin", "gameid = $gameid")
         );
+    }
+
+    private static function recurseTree($gameids = array())
+    {
+        $select = Database::select(
+            "games",
+            array("gameidorigin"),
+            array(
+                "gameid=gameidorigin",
+                "gameidrelated IN (".implode(",", $gameids).")",
+                "gameidorigin NOT IN (".implode(",", $gameids).")"
+            )
+        );
+
+        $result = new \stdclass;
+        $result->leaf = null;
+        // Something was returned, getting the rest of the tree
+        if ($select->rowCount != 0) {
+            $result->leaf = array();
+            foreach ($select->rows as $row) {
+                $recurse = self::recurseTree(array($row->gameidorigin));
+                if (!($recurse instanceof \stdclass)) {
+                    foreach ($recurse as $array) {
+                        $result->leaf[] = $array;
+                    }
+                } else {
+                    $result->leaf[] = $recurse;
+                }
+            }
+        }
+        $select = Database::select(
+            "games",
+            array("*"),
+            array(
+                "gameid=gameidorigin",
+                "gameidorigin IN (".implode(",", $gameids).")"
+            )
+        );
+        if ($result->leaf==null) {
+            $result = $select->rows;
+        } else {
+            $result->branch = $select->rows[0];
+        }
+        return $result;
     }
 
     private static function saveEntry($gameid)

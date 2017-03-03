@@ -3,9 +3,9 @@ Things to add:
         ☐ Better Status format
         ☐ Ability to block users
     Games:
-        ☐ Ability to get a tree for a game
-        ☐ SELECT gameidorigin WHERE gameid=gameidorigin AND gameidorigin=gameidrelated
-        ☐ recursive: gameid=gameidorigin AND gameidrelated IN $previous -- stops when select=0
+        ✔ Ability to get a tree for a game @done (3/2/2017, 10:29:10 PM)
+        ✔ SELECT gameidorigin WHERE gameid=gameidorigin AND gameidorigin=gameidrelated @done (3/2/2017, 10:29:12 PM)
+        ✔ recursive: gameid=gameidorigin AND gameidrelated IN $previous -- stops when select=0 @done (3/2/2017, 10:29:13 PM)
 
 Tables to test:
     ✔ Friends @done (2/23/2017, 2:23:53 PM)
