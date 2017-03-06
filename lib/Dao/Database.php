@@ -106,7 +106,7 @@ class Database
             $connection->beginTransaction();
             $statement = $connection->prepare($query);
             $statement->execute();
-            if (substr($query, 0, 1)==="S") {
+            if (substr($query, 0, 6)==="SELECT") {
                 $result->rows = $statement->fetchAll(PDO::FETCH_OBJ);
                 $result->rowCount = count($result->rows);
             } else {
