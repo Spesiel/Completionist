@@ -2,7 +2,11 @@
 
 class Keywords implements IConstants
 {
-    const DBTIMESTAMP = "CURRENT_TIMESTAMP";
+    const DBTIMESTAMP   = "CURRENT_TIMESTAMP";
+    const DBSELECT      = "SELECT";
+    const DBINSERT      = "INSERT";
+    const DBUPDATE      = "UPDATE";
+    const DBDELETE      = "DELETE";
 
     private static $list = array(
         self::DBTIMESTAMP => self::DBTIMESTAMP
