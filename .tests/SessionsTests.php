@@ -6,8 +6,6 @@ use Completionist\Helper\TokenHelper as TokenHelper;
 /***********************************************
 * Tests on sessions select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Sessions.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\TokenHelper.php";
 printf("<h1>Sessions select/insert/update</h1><hr/>");
 
 $result = Sessions::select();

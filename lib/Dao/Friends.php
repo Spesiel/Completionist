@@ -1,5 +1,7 @@
 <?php namespace Completionist\Dao;
 
+use Completionist\Constants\Tables as Tables;
+
 class Friends
 {
     const STATUS = array(
@@ -10,9 +12,7 @@ class Friends
 
     public static function select($columns = array("*"), $filters = array())
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
-        $result = Database::select("friends", $columns, $filters);
+        $result = Database::select(Tables::FRIENDS, $columns, $filters);
 
         foreach ($result->rows as $row) {
             $row->status = self::STATUS[($row->status)];
@@ -59,8 +59,6 @@ class Friends
 
     public static function request($userid, $friendid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         $isBlocked1 = self::select(
             array("*"),
             array("userid=$friendid","friendid=$userid",array_search("blocked", self::STATUS))
@@ -77,7 +75,7 @@ class Friends
             return $result;
         } else {
             return Database::insert(
-                "friends",
+                Tables::FRIENDS,
                 array("userid","friendid","status"),
                 array($userid,$friendid,array_search("requested", self::STATUS))
             );
@@ -86,10 +84,8 @@ class Friends
 
     public static function accept($userid, $friendid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         return Database::update(
-            "friends",
+            Tables::FRIENDS,
             array("status"),
             array(array_search("accepted", self::STATUS)),
             array("userid=$friendid","friendid=$userid")
@@ -98,13 +94,11 @@ class Friends
 
     public static function block($userid, $friendid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         self::remove($userid, $friendid);
         self::remove($friendid, $userid);
 
         return Database::insert(
-            "friends",
+            Tables::FRIENDS,
             array("userid","friendid","status"),
             array($userid,$friendid,array_search("blocked", self::STATUS))
         );
@@ -112,15 +106,13 @@ class Friends
 
     public static function remove($userid, $friendid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         $result1 = Database::delete(
-            "friends",
+            Tables::FRIENDS,
             array("userid=$userid","friendid=$friendid")
         );
 
         $result2 = Database::delete(
-            "friends",
+            Tables::FRIENDS,
             array("userid=$friendid","friendid=$userid")
         );
 

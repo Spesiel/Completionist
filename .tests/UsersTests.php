@@ -5,7 +5,6 @@ use Completionist\Dao\Users as Users;
 /***********************************************
 * Tests on users select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
 printf("<h1>Users select/insert/update</h1><hr/>");
 
 $result = Users::select();

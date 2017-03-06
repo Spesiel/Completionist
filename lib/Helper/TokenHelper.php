@@ -13,8 +13,6 @@ class TokenHelper
 
     public static function encode($payload)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\Base64Helper.php";
-
         $header = array(
             "typ"=>"jwt",
             "alg"=>"HS256"
@@ -29,9 +27,6 @@ class TokenHelper
 
     public static function decode($token)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\Base64Helper.php";
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\CompletionistException.php";
-
         list($header, $payload, $signature) = explode(".", $token);
 
         if (!self::check(array($header, $payload, $signature))) {
@@ -43,8 +38,6 @@ class TokenHelper
 
     public static function check($token = array())
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\Base64Helper.php";
-
         return hash_equals(
             $token[2],
             Base64Helper::encode(static::getSignature($token[0], $token[1]))

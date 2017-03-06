@@ -1,6 +1,7 @@
 <?php namespace Completionist\Dao;
 
-use \Completionist\Helper\PasswordHelper as PasswordHelper;
+use Completionist\Helper\PasswordHelper as PasswordHelper;
+use Completionist\Constants\Tables as Tables;
 
 class Users
 {
@@ -12,9 +13,7 @@ class Users
 
     public static function select($columns = array("*"), $filters = array())
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
-        $result = Database::select("users", $columns, $filters);
+        $result = Database::select(Tables::USERS, $columns, $filters);
 
         foreach ($result->rows as $row) {
             $row->role = self::ROLES[($row->role)];
@@ -25,15 +24,13 @@ class Users
 
     public static function insert($name, $email, $password)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\PasswordHelper.php";
         $hash = PasswordHelper::encode($password);
 
         if (empty($email)) {
-            return Database::insert("users", array("name","hash"), array(Database::encodeString($name), $hash));
+            return Database::insert(Tables::USERS, array("name","hash"), array(Database::encodeString($name), $hash));
         } else {
             return Database::insert(
-                "users",
+                Tables::USERS,
                 array("name","email","hash"),
                 array(Database::encodeString($name),Database::encodeString($email), $hash)
             );
@@ -42,8 +39,6 @@ class Users
 
     public static function update($userid, $name, $email, $password)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\PasswordHelper.php";
         $hash = PasswordHelper::encode($password);
 
         $columns = array();
@@ -63,16 +58,14 @@ class Users
         }
 
         self::saveEntry($userid);
-        return Database::update("users", $columns, $values, array("userid=useridorigin", "useridorigin=$userid"));
+        return Database::update(Tables::USERS, $columns, $values, array("userid=useridorigin", "useridorigin=$userid"));
     }
 
     public static function activate($userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         self::saveEntry($userid);
         return Database::update(
-            "users",
+            Tables::USERS,
             array("active"),
             array(1),
             array("userid=useridorigin", "useridorigin=$userid")
@@ -81,11 +74,9 @@ class Users
 
     public static function deactivate($userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         self::saveEntry($userid);
         return Database::update(
-            "users",
+            Tables::USERS,
             array("active"),
             array(0),
             array("userid=useridorigin", "useridorigin=$userid")
@@ -94,19 +85,15 @@ class Users
 
     public static function getRole($userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
-        $roles = Database::select("users", array("role"), array("userid=$userid","useridorigin=userid"));
+        $roles = Database::select(Tables::USERS, array("role"), array("userid=$userid","useridorigin=userid"));
         return self::ROLES[($roles->rows[0]->role)];
     }
 
     public static function setRole($userid, $role)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         self::saveEntry($userid);
         return Database::update(
-            "users",
+            Tables::USERS,
             array("role"),
             array(array_search($role, self::ROLES)),
             array("userid=useridorigin", "useridorigin=$userid")
@@ -115,14 +102,12 @@ class Users
 
     private static function saveEntry($userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         $result = Database::select(
-            "users",
+            Tables::USERS,
             array("useridorigin","name","email","hash","modification","active","role"),
             array("userid=useridorigin", "useridorigin=$userid")
         );
         $result = json_decode(json_encode($result->rows[0]), true);
-        Database::insert("users", array("useridorigin","name","email","hash","modification","active","role"), $result);
+        Database::insert(Tables::USERS, array("useridorigin","name","email","hash","modification","active","role"), $result);
     }
 }

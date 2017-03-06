@@ -1,12 +1,11 @@
 <?php namespace Completionist\Tests;
 
-use \Completionist\Dao\Users as Users;
-use \Completionist\Dao\Friends as Friends;
+use Completionist\Dao\Users as Users;
+use Completionist\Dao\Friends as Friends;
 
 /***********************************************
 * Tests on friends select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
 printf("<h1>Users insert</h1><hr/>");
 
 $result = Users::select();
@@ -29,7 +28,6 @@ printf("Users has: ".$result->rowCount." entries (should be 3)<br/>");
 /***********************************************
 * Tests on friends select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Friends.php";
 printf("<h1>Friends select/insert/update</h1><hr/>");
 
 $result = Friends::select();

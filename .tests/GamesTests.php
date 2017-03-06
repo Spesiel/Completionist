@@ -6,7 +6,6 @@ use Completionist\Dao\Games as Games;
 /***********************************************
 * Adding users
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
 printf("<h1>Users insert</h1><hr/>");
 
 $result = Users::select();
@@ -22,7 +21,6 @@ printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
 /***********************************************
 * Tests on games select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Games.php";
 printf("<h1>Games select/insert/update</h1><hr/>");
 
 $result = Games::select();
@@ -38,34 +36,34 @@ printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 $result = Games::select();
 printf("Games has: ".$result->rowCount." entries (should be 2)<br/>");
 
-$result = Games::insert("game1", "link", "comment", 2);
+$result = Games::insert("game1", "link", "comment", 3);
 printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 sleep(1);
-$result = Games::update(3, "game1 updated", "link", "comment updated", 2);
+$result = Games::update(3, "game1 updated", "link", "comment updated", 3);
 printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 
-$result = Games::insertSub(3, "game1 sub", "link sub", "comment sub", 2);
+$result = Games::insertSub(3, "game1 sub", "link sub", "comment sub", 3);
 printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 
-$result = Games::update(5, "game1 sub updated", "link sub updated", "comment sub updated", 2);
+$result = Games::update(5, "game1 sub updated", "link sub updated", "comment sub updated", 3);
 printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 
-$result = Games::insertSub(5, "game1 sub sub 1", "link sub sub", "comment sub sub", 2);
+$result = Games::insertSub(5, "game1 sub sub 1", "link sub sub", "comment sub sub", 3);
 printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 
-$result = Games::insertSub(7, "game1 sub sub 1 leaf 1", "link sub sub leaf", "comment sub sub leaf", 2);
+$result = Games::insertSub(7, "game1 sub sub 1 leaf 1", "link sub sub leaf", "comment sub sub leaf", 3);
 printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 
-$result = Games::insertSub(7, "game1 sub sub 1 leaf 2", "link sub sub leaf", "comment sub sub leaf", 2);
+$result = Games::insertSub(7, "game1 sub sub 1 leaf 2", "link sub sub leaf", "comment sub sub leaf", 3);
 printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 
-$result = Games::insertSub(5, "game1 sub sub 2", "link sub sub", "comment sub sub", 2);
+$result = Games::insertSub(5, "game1 sub sub 2", "link sub sub", "comment sub sub", 3);
 printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 
-$result = Games::insertSub(10, "game1 sub sub 2 leaf 1", "link sub sub leaf", "comment sub sub leaf", 2);
+$result = Games::insertSub(10, "game1 sub sub 2 leaf 1", "link sub sub leaf", "comment sub sub leaf", 3);
 printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 
-$result = Games::insertSub(10, "game1 sub sub 2 leaf 2", "link sub sub leaf", "comment sub sub leaf", 2);
+$result = Games::insertSub(10, "game1 sub sub 2 leaf 2", "link sub sub leaf", "comment sub sub leaf", 3);
 printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
 
 $result = Games::getTree(3);

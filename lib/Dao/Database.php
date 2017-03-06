@@ -3,24 +3,13 @@
 use \InvalidArgumentException;
 use \PDO;
 
-use \Completionist\CompletionistException as CompletionistException;
+use Completionist\Config as Config;
+use Completionist\Constants\Keywords as Keywords;
+use Completionist\Constants\Tables as Tables;
+use Completionist\CompletionistException as CompletionistException;
 
 class Database
 {
-    const TABLES = array(
-        "users"         => array("name","email","hash"),
-        "games"         => array("name","link","comment","userid"),
-        "sessions"      => array("token","userid"),
-        "bookmarks"     => array("userid","gameid"),
-        "friends"       => array("friendid","userid"),
-        "messages"      => array("fromuserid","touserid","title","body"),
-        "completion"    => array("userid","gameid","status","comment")
-    );
-
-    const KEYWORDS = array(
-        "CURRENT_TIMESTAMP" => "CURRENT_TIMESTAMP"
-    );
-
     public static function select($table = "", $columns = array("*"), $filters = array())
     {
         // Some verifications on arguments
@@ -54,7 +43,7 @@ class Database
         while (count($columns)) {
             $col = array_pop($columns);
             $val = array_pop($values);
-            if (!array_key_exists($val, self::KEYWORDS)) {
+            if (!Keywords::exists($val)) {
                 $args[] = $col."='$val'";
             } else {
                 $args[] = $col."=$val";
@@ -82,7 +71,7 @@ class Database
         if (empty($table)) {
             throw new InvalidArgumentException("=== $caller: \$table cannot be empty");
         }
-        if (empty(self::TABLES[$table])) {
+        if (!Tables::exists($table)) {
             throw new InvalidArgumentException("=== $caller: \$table unknown: $table");
         }
         if (!is_array($columns)) {
@@ -104,15 +93,11 @@ class Database
 
     private static function execute($query)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\CompletionistException.php";
-
         $connection = new PDO(
-            "mysql:host=localhost;dbname=completionist;charset=utf8mb4",
-            "completionist",
-            "default",
-            array(
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-            )
+            Config::DBCONNECTION,
+            Config::DBUSERNAME,
+            Config::DBPASSWORD,
+            Config::PDOOPTIONS
         );
 
         $result = new \stdclass;

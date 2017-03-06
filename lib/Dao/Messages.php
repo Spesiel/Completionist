@@ -1,12 +1,13 @@
 <?php namespace Completionist\Dao;
 
+use Completionist\Constants\Keywords as Keywords;
+use Completionist\Constants\Tables as Tables;
+
 class Messages
 {
     public static function select($columns = array("*"), $filters = array())
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
-        return Database::select("messages", $columns, $filters);
+        return Database::select(Tables::MESSAGES, $columns, $filters);
     }
 
     public static function getAll($userid)
@@ -23,10 +24,8 @@ class Messages
 
     public static function send($from, $to, $title, $body)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         return Database::insert(
-            "messages",
+            Tables::MESSAGES,
             array("fromuserid","touserid","title","body"),
             array($from,$to,$title,$body)
         );
@@ -34,12 +33,10 @@ class Messages
 
     public static function open($userid, $messageid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         Database::update(
-            "messages",
+            Tables::MESSAGES,
             array("opened"),
-            array("CURRENT_TIMESTAMP"),
+            array(Keywords::DBTIMESTAMP),
             array("touserid=$userid","messageid=$messageid")
         );
 
@@ -48,12 +45,10 @@ class Messages
 
     public static function delete($userid, $messageid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         return Database::update(
-            "messages",
+            Tables::MESSAGES,
             array("deleted"),
-            array("CURRENT_TIMESTAMP"),
+            array(Keywords::DBTIMESTAMP),
             array("touserid=$userid","messageid=$messageid")
         );
     }

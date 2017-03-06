@@ -1,18 +1,16 @@
 <?php namespace Completionist\Dao;
 
+use Completionist\Constants\Tables as Tables;
+
 class Games
 {
     public static function select($columns = array("*"), $filters = array())
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
-        return Database::select("games", $columns, $filters);
+        return Database::select(Tables::GAMES, $columns, $filters);
     }
 
     public static function getTree($gameid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         $result = new \stdclass;
 
         return self::recurseTree(array($gameid));
@@ -20,20 +18,16 @@ class Games
 
     public static function insert($name, $link, $comment, $userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         return Database::insert(
-            "games",
-            Database::TABLES["games"],
+            Tables::GAMES,
+            Tables::LISTING[Tables::GAMES],
             array(Database::encodeString($name),Database::encodeString($link),Database::encodeString($comment),$userid)
         );
     }
 
     public static function insertSub($gameid, $name, $link, $comment, $userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
-        $cols = Database::TABLES["games"];
+        $cols = Tables::LISTING[Tables::GAMES];
         $cols[] = "gameidrelated";
         $vals = array(
             Database::encodeString($name),
@@ -43,13 +37,11 @@ class Games
             $gameid
         );
 
-        return Database::insert("games", $cols, $vals);
+        return Database::insert(Tables::GAMES, $cols, $vals);
     }
 
     public static function update($gameid, $name, $link, $comment, $userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         $columns = array();
         $values = array();
 
@@ -69,16 +61,14 @@ class Games
         $values[] = $userid;
 
         self::saveEntry($gameid);
-        return Database::update("games", $columns, $values, array("gameid=gameidorigin", "gameidorigin=$gameid"));
+        return Database::update(Tables::GAMES, $columns, $values, array("gameid=gameidorigin", "gameidorigin=$gameid"));
     }
 
     public static function lock($gameid, $userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         self::saveEntry($gameid);
         return Database::update(
-            "games",
+            Tables::GAMES,
             array("locked","userid"),
             array(1,$userid),
             array("gameid=gameidorigin", "gameid = $gameid")
@@ -87,11 +77,9 @@ class Games
 
     public static function unlock($gameid, $userid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         self::saveEntry($gameid);
         return Database::update(
-            "games",
+            Tables::GAMES,
             array("locked","userid"),
             array(0,$userid),
             array("gameid=gameidorigin", "gameid = $gameid")
@@ -101,7 +89,7 @@ class Games
     private static function recurseTree($gameids = array())
     {
         $select = Database::select(
-            "games",
+            Tables::GAMES,
             array("gameidorigin"),
             array(
                 "gameid=gameidorigin",
@@ -127,7 +115,7 @@ class Games
             }
         }
         $select = Database::select(
-            "games",
+            Tables::GAMES,
             array("*"),
             array(
                 "gameid=gameidorigin",
@@ -144,16 +132,14 @@ class Games
 
     private static function saveEntry($gameid)
     {
-        require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Database.php";
-
         $result = Database::select(
-            "games",
+            Tables::GAMES,
             array("gameidorigin","gameidrelated","name","link","comment","modification","userid","locked"),
             array("gameid=gameidorigin", "gameidorigin=$gameid")
         );
         $result = json_decode(json_encode($result->rows[0]), true);
         Database::insert(
-            "games",
+            Tables::GAMES,
             array("gameidorigin","gameidrelated","name","link","comment","modification","userid","locked"),
             $result
         );

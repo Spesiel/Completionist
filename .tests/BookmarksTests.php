@@ -1,11 +1,10 @@
 <?php namespace Completionist\Tests;
 
-use \Completionist\Dao\Bookmarks as Bookmarks;
+use Completionist\Dao\Bookmarks as Bookmarks;
 
 /***********************************************
 * Tests on bookmarks add/delete
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Bookmarks.php";
 printf("<h1>Bookmarks add/delete</h1><hr/>");
 
 $result = Bookmarks::select();
