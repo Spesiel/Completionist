@@ -3,30 +3,30 @@
 printf("<h1>Tests</h1><hr/><hr/>");
 
 /***********************************************
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/PasswordHelperTests.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/TokenHelperTests.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/PasswordHelperTests.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/TokenHelperTests.php";
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/UsersTests.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/SessionsTests.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/GamesTests.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/UsersTests.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/SessionsTests.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/GamesTests.php";
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/BookmarksTests.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/BookmarksTests.php";
 printf("<hr/><hr/><h1>Reset</h1>");
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/reset.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/reset.php";
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/FriendsTests.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/FriendsTests.php";
 printf("<hr/><hr/><h1>Reset</h1>");
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/reset.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/reset.php";
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/MessagesTests.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/MessagesTests.php";
 printf("<hr/><hr/><h1>Reset</h1>");
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/reset.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/reset.php";
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/RolesTests.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/RolesTests.php";
 printf("<hr/><hr/><h1>Reset</h1>");
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/reset.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/reset.php";
 ***********************************************/
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/FriendsTests.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/FriendsTests.php";
 printf("<hr/><hr/><h1>Reset</h1>");
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/reset.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/reset.php";
