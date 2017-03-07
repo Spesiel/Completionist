@@ -1,19 +1,35 @@
 <?php namespace Completionist\Tests\Units;
 
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\PasswordHelper.php";
+
+use Completionist\Tests\Functions as Tests;
 use Completionist\Helper\PasswordHelper as PasswordHelper;
+
+printf("<h1>PasswordHelper</h1><hr/>");
 
 /***********************************************
 * Tests on passwordHelper
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\PasswordHelper.php";
-printf("<h1>PasswordHelper</h1><hr/>");
 
 $password = "testing the capabilities of encoding passwords";
-printf("Password: $password<br/>");
 $hash = PasswordHelper::encode($password);
-printf("Encoded password: $hash<br/>");
-$compare = PasswordHelper::check($password, $hash);
-printf("Password checks hash: $compare (should be 1)<br/>");
-$compare = PasswordHelper::check("wrong password", $hash);
-printf("Password checks hash: ".(!$compare?"null":"1")." (should be null)<br/>");
+
+$list = array();
+$list[] = array(
+    "Encoded password",
+    "ZWIyNWRmMzE2YjEzNWY3ZTM3YWIzNDBlMDY5ZGQ2OGQ3YTdkNDcwZWViNjM5MzhlOWNmMGNjZDdlYjAyN2Q4Mg",
+    $hash
+);
+$list[] = array(
+    "Password checks hash",
+    true,
+    PasswordHelper::check($password, $hash)
+);
+$list[] = array(
+    "Password checks hash",
+    false,
+    PasswordHelper::check("wrong password", $hash)
+);
 /**********************************************/
+
+Tests::assertions($list);
