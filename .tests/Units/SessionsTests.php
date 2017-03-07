@@ -1,4 +1,4 @@
-<?php namespace Completionist\Tests;
+<?php namespace Completionist\Tests\Units;
 
 use Completionist\Dao\Sessions as Sessions;
 use Completionist\Helper\TokenHelper as TokenHelper;

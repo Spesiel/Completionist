@@ -1,4 +1,4 @@
-<?php namespace Completionist\Tests;
+<?php namespace Completionist\Tests\Units;
 
 const TABLES = array(
     "bookmarks" => false,

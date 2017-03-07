@@ -1,4 +1,4 @@
-<?php namespace Completionist\Tests;
+<?php namespace Completionist\Tests\Units;
 
 use Completionist\Dao\Users as Users;
 use Completionist\Dao\Games as Games;
