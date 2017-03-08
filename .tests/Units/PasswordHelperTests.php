@@ -5,8 +5,6 @@ require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\PasswordHelper.php";
 use Completionist\Tests\Functions as Tests;
 use Completionist\Helper\PasswordHelper as PasswordHelper;
 
-printf("<h1>PasswordHelper</h1><hr/>");
-
 /***********************************************
 * Tests on passwordHelper
 ***********************************************/
@@ -32,4 +30,4 @@ $list[] = array(
 );
 /**********************************************/
 
-Tests::assertions($list);
+Tests::run("PasswordHelper", $list);

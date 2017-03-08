@@ -2,41 +2,31 @@
 
 class Functions
 {
-    public static $assertResults;
-
-    public static function assertion($expected, $value, $message = "", $quiet = true)
-    {
-        $result = ($expected === $value);
-
-        // Output required?
-        if (!$quiet && (!empty($message) || !$result)) {
-            printf("$message: ".($result? "&#9989;":"&#10060;")."<br/>");
-        }
-
-        return $result;
-    }
-
-    public static function assertions($list, $quiet = true)
+    public static function run($title, $list)
     {
         $result = true;
-
         $assertResults = array();
+
+        // Performs each test
         foreach ($list as $assert) {
-            switch (count($assert)) {
-                case 2:
-                    $result = ($result && self::assertion($assert[0], $assert[1], "", false));
-                    break;
-                case 3:
-                    $result = ($result && self::assertion($assert[1], $assert[2], $assert[0]));
-                    if (!empty($assert[0]) || !$result) {
-                        printf($assert[0].": ".($result? "&#9989;":"&#10060;")."<br/>");
-                    }
-                    break;
-            }
+            $result = ($result && ($assert[1]===$assert[2]));
+            $assertResults[] = array($assert[0], $result);
         }
 
-        if (!$quiet) {
-            $result? printf("&#9989; Passed") : printf("&#10060; Failed");
+        // Building the output
+        $html = "<hr/><details>".
+                    "<summary>$title: ".(
+                        $result? "&#9989;" : "&#10060;"
+                    )."</summary>";
+        // For each test
+        foreach ($assertResults as $value) {
+            $html .= $value[0].": ".(
+                $value[1]? "&#9989;" : "&#10060;"
+            )."<br/>";
         }
+        $html .= "</details>";
+
+        // Output to page
+        printf($html);
     }
 }

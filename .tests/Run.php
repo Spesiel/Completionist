@@ -2,7 +2,7 @@
 
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/TestFunctions.php";
 
-printf("<h1>Tests</h1><hr/><hr/>");
+printf("<h1>Tests</h1><hr/>");
 
 /***********************************************/
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/PasswordHelperTests.php";
