@@ -1,65 +1,110 @@
 <?php namespace Completionist\Tests\Units;
 
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Sessions.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\TokenHelper.php";
+
+use Completionist\Tests\Functions as Tests;
 use Completionist\Dao\Sessions as Sessions;
 use Completionist\Helper\TokenHelper as TokenHelper;
 
 /***********************************************
 * Tests on sessions select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Sessions.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\TokenHelper.php";
-printf("<h1>Sessions select/insert/update</h1><hr/>");
+$list = array();
 
 $result = Sessions::select();
-printf("Sessions has: ".$result->rowCount." entries<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Sessions should be empty",
+    0,
+    $result->rowCount
+);
 
 $result = Sessions::open("test1", "testhash1");
-printf("Sessions: ".$result->rowCount." row affected (should be 1)<br/>");
-var_dump($result);
+$list[] = array(
+    "Sessions has 1 entry",
+    1,
+    $result->rowCount
+);
 
-printf("Payload: token decoded");
-var_dump(TokenHelper::decode($result->token));
+$tokenDecoded = TokenHelper::decode($result->token);
+$expected = new \stdclass;
+        // Expiration date
+        date_default_timezone_set('UTC');
+        $expdate = new \DateTime();
+        $expdate->add(new \DateInterval("P7D"));
+$expected->exp = $expdate->format("Ymd");
+$expected->name = "test1";
+$expected->role = "user";
+$list[] = array(
+    "Payload: token decoded",
+    serialize($expected),
+    serialize($tokenDecoded)
+);
 $token = $result->token;
 
 $result = Sessions::select();
-printf("Sessions has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Sessions has 1 entry",
+    1,
+    $result->rowCount
+);
 
 $result = Sessions::check($token);
-printf("Sessions: user is logged in<br/>");
-var_dump($result);
+$list[] = array(
+    "Sessions: user is logged in",
+    1,
+    $result->rowCount
+);
 
 $result = Sessions::check("dummy");
-printf("Sessions: user is not logged in, and returned null<br/>");
-var_dump($result);
+$list[] = array(
+    "Sessions: user is not logged in, and returned null",
+    null,
+    $result
+);
 
 $result = Sessions::open("test1", "testhash1");
-printf("Sessions: ".$result->rowCount." row affected (should be 0), session is already opened<br/>");
-var_dump($result);
-
-printf("Payload: token decoded");
-var_dump(TokenHelper::decode($result->token));
-$token = $result->token;
+$list[] = array(
+    "Session is already opened",
+    0,
+    $result->rowCount
+);
 
 $result = Sessions::select();
-printf("Sessions has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
-
+$list[] = array(
+    "Sessions has 1 entry",
+    1,
+    $result->rowCount
+);
 sleep(2);
 
 $result = Sessions::open("test1", "testhash");
-printf("Sessions: wrong login, and returned null<br/>");
-var_dump($result);
+$list[] = array(
+    "Sessions: wrong login, and returned null",
+    null,
+    $result
+);
 
 $result = Sessions::close($token);
-printf("Sessions: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Sessions: closed",
+    1,
+    $result->rowCount
+);
 
 $result = Sessions::select();
-printf("Sessions has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Sessions has 1 entry",
+    1,
+    $result->rowCount
+);
 
 $result = Sessions::check($token);
-printf("Sessions: user is not logged in, and returned null<br/>");
-var_dump($result);
+$list[] = array(
+    "Sessions: user is not logged in",
+    null,
+    $result
+);
 /**********************************************/
+
+Tests::run("Sessions", $list);

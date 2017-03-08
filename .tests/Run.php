@@ -5,6 +5,8 @@ require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/TestFunctions.php";
 printf("<h1>Tests</h1><hr/>");
 
 /***********************************************/
+require $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/reset.php";
+
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/PasswordHelperTests.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/TokenHelperTests.php";
 

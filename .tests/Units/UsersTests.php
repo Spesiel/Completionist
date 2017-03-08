@@ -1,38 +1,70 @@
 <?php namespace Completionist\Tests\Units;
 
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
+
+use Completionist\Tests\Functions as Tests;
 use Completionist\Dao\Users as Users;
 
 /***********************************************
 * Tests on users select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
-printf("<h1>Users select/insert/update</h1><hr/>");
+$list = array();
 
 $result = Users::select();
-printf("Users has: ".$result->rowCount." entries<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Users should be empty",
+    0,
+    $result->rowCount
+);
 
 $result = Users::insert("test", "", "testhash");
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Users insert: 1 row affected",
+    1,
+    $result->rowCount
+);
 
 $result = Users::select();
-printf("Users has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Users has 1 entry",
+    1,
+    $result->rowCount
+);
 
 $result = Users::deactivate(1);
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Users deactivation: 1 row affected",
+    1,
+    $result->rowCount
+);
 
 $result = Users::select();
-printf("Users has: ".$result->rowCount." entries (should be 2)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Users has 2 entry",
+    2,
+    $result->rowCount
+);
 
 $result = Users::insert("test1", "", "testhash0");
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Users insert: 1 row affected",
+    1,
+    $result->rowCount
+);
 sleep(2);
 $result = Users::update(3, "test1", "", "testhash1");
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Users update: 1 row affected",
+    1,
+    $result->rowCount
+);
 
 $result = Users::select();
-printf("Users has: ".$result->rowCount." entries (should be 4)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Users has 4 entry",
+    4,
+    $result->rowCount
+);
 /**********************************************/
+
+Tests::run("Users", $list);

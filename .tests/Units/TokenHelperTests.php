@@ -1,25 +1,37 @@
 <?php namespace Completionist\Tests\Units;
 
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\TokenHelper.php";
+
+use Completionist\Tests\Functions as Tests;
 use Completionist\Helper\TokenHelper as TokenHelper;
 
 /***********************************************
 * Tests on tokenHelper
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helper\TokenHelper.php";
-printf("<h1>TokenHelper</h1><hr/>");
-
-printf("Payload: name is test");
 $payload = array("name"=>"test");
-var_dump($payload);
-printf("Payload: token value");
-$token = TokenHelper::encode($payload);
-var_dump($token);
-printf("Payload: token decoded");
-$newPayload = TokenHelper::decode($token);
-var_dump($newPayload);
-printf("Different payload: name is test2");
-$diffPayload = TokenHelper::decode(
+
+$list = array();
+$list[] = array(
+    "Token generation",
+    "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoidGVzdCJ9.DyaQB3sgUFEMyGAaNTHVDe_yrdOGARAY4TtInYvSv0g",
+    TokenHelper::encode($payload)
+);
+$result = TokenHelper::decode(
+    "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoidGVzdCJ9.DyaQB3sgUFEMyGAaNTHVDe_yrdOGARAY4TtInYvSv0g"
+);
+$list[] = array(
+    "Token decoding 1",
+    "test",
+    $result->name
+);
+$result = TokenHelper::decode(
     "eyJ0eXAiOiJqd3QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoidGVzdDIifQ.4aWmIAbncNwvL31_Pml8wjr1DO44Bpoi0g4APrHxMxY"
 );
-var_dump($diffPayload);
+$list[] = array(
+    "Token decoding 2",
+    "test2",
+    $result->name
+);
 /**********************************************/
+
+Tests::run("TokenHelper", $list);
