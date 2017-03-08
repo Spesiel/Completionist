@@ -9,8 +9,9 @@ class Functions
 
         // Performs each test
         foreach ($list as $assert) {
-            $result = ($result && ($assert[1]===$assert[2]));
-            $assertResults[] = array($assert[0], $result);
+            $assertion = ($assert[1]===$assert[2]);
+            $result = ($result && $assertion);
+            $assertResults[] = array($assert[0], $assertion);
         }
 
         // Building the output
