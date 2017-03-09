@@ -1,42 +1,63 @@
 <?php namespace Completionist\Tests\Units;
 
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Bookmarks.php";
+
+use Completionist\Tests\Functions as Tests;
 use \Completionist\Dao\Bookmarks as Bookmarks;
 
 /***********************************************
 * Tests on bookmarks add/delete
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Bookmarks.php";
-printf("<h1>Bookmarks add/delete</h1><hr/>");
+$list = array();
 
 $result = Bookmarks::select();
-printf("Bookmarks has: ".$result->rowCount." entries<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Bookmarks should be empty",
+    0,
+    $result->rowCount
+);
 
 $result = Bookmarks::add(1, 1);
-printf("Bookmarks: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Bookmarks add: 1 row affected",
+    1,
+    $result->rowCount
+);
+
+$result = Bookmarks::add(1, 3);
+$list[] = array(
+    "Bookmarks add: 1 row affected",
+    1,
+    $result->rowCount
+);
+
+$result = Bookmarks::add(2, 3);
+$list[] = array(
+    "Bookmarks add: 1 row affected",
+    1,
+    $result->rowCount
+);
 
 $result = Bookmarks::select();
-printf("Bookmarks has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Bookmarks has 3 entries",
+    3,
+    $result->rowCount
+);
 
-$result = Bookmarks::add(3, 1);
-printf("Bookmarks: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Bookmarks::select();
-printf("Bookmarks has: ".$result->rowCount." entries (should be 2)<br/>");
-var_dump($result->rows);
-
-$result = Bookmarks::add(3, 3);
-printf("Bookmarks: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Bookmarks::select();
-printf("Bookmarks has: ".$result->rowCount." entries (should be 3)<br/>");
-var_dump($result->rows);
-
-$result = Bookmarks::remove(3, 1);
-printf("Bookmarks: ".$result->rowCount." row affected (should be 1)<br/>");
+$result = Bookmarks::remove(1, 3);
+$list[] = array(
+    "Bookmarks remove: 1 entry affected",
+    1,
+    $result->rowCount
+);
 
 $result = Bookmarks::select();
-printf("Bookmarks has: ".$result->rowCount." entries (should be 2)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Bookmarks has 2 entries",
+    2,
+    $result->rowCount
+);
 /**********************************************/
+
+Tests::run("Bookmarks", $list);

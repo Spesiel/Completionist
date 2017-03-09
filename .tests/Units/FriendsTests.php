@@ -1,125 +1,129 @@
 <?php namespace Completionist\Tests\Units;
 
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Friends.php";
+
+use Completionist\Tests\Functions as Tests;
 use \Completionist\Dao\Users as Users;
 use \Completionist\Dao\Friends as Friends;
 
 /***********************************************
 * Tests on friends select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
-printf("<h1>Users insert</h1><hr/>");
+$list = array();
+
+Users::insert("testFriends1", "", "testhash");
+Users::insert("testFriends2", "", "testhash");
+Users::insert("testFriends3", "", "testhash");
 
 $result = Users::select();
-printf("Users has: ".$result->rowCount." entries<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Users has 3 entries",
+    3,
+    $result->rowCount
+);
 
-$result = Users::insert("testFriends1", "", "testhash");
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Users::insert("testFriends2", "", "testhash");
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Users::insert("testFriends3", "", "testhash");
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Users::select();
-printf("Users has: ".$result->rowCount." entries (should be 3)<br/>");
 /**********************************************/
 
 /***********************************************
 * Tests on friends select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Friends.php";
-printf("<h1>Friends select/insert/update</h1><hr/>");
-
 $result = Friends::select();
-printf("Friends has: ".$result->rowCount." entries<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Friends should be empty",
+    0,
+    $result->rowCount
+);
 
 $result = Friends::request(1, 2);
-printf("Friends request: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Friends requests",
+    1,
+    $result->rowCount
+);
 
 $result = Friends::getRequests(1);
-printf("Friends list requests: ".$result->rowCount." entries (should be 0)<br/>");
+$list[] = array(
+    "Friends requests userid=1",
+    0,
+    $result->rowCount
+);
 
 $result = Friends::getRequests(2);
-printf("Friends list requests: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Friends requests userid=2",
+    1,
+    $result->rowCount
+);
 
 $result = Friends::accept(1, 2);
-printf("Friends accept: ".$result->rowCount." row affected (should be 0)<br/>");
+$list[] = array(
+    "Friends accepts userid=1 friendid=2",
+    0,
+    $result->rowCount
+);
 
 $result = Friends::accept(2, 1);
-printf("Friends accept: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Friends accepts userid=2 friendid=1",
+    1,
+    $result->rowCount
+);
 
 $result = Friends::getList(1);
-printf("Friends of userid=1 has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Friends of userid=1",
+    1,
+    $result->rowCount
+);
 
 $result = Friends::getList(2);
-printf("Friends of userid=2 has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Friends of userid=2",
+    1,
+    $result->rowCount
+);
 
 $result = Friends::remove(2, 1);
-printf("Friends remove: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Friends removes userid=2 friendid=1",
+    1,
+    $result->rowCount
+);
 
 $result = Friends::remove(1, 2);
-printf("Friends remove: ".$result->rowCount." row affected (should be 0)<br/>");
+$list[] = array(
+    "Friends removes userid=1 friendid=2",
+    0,
+    $result->rowCount
+);
 
-$result = Friends::request(1, 2);
-printf("Friends request: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Friends::accept(2, 1);
-printf("Friends accept: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Friends::remove(1, 2);
-printf("Friends remove: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Friends::remove(2, 1);
-printf("Friends remove: ".$result->rowCount." row affected (should be 0)<br/>");
-
+Friends::request(1, 2);
+Friends::accept(2, 1);
+Friends::remove(1, 2);
+Friends::remove(2, 1);
 $result = Friends::block(1, 3);
-printf("Friends block: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Friends blocks userid=1 friendid=3",
+    1,
+    $result->rowCount
+);
 
 $result = Friends::request(3, 2);
-printf("Friends request is not blocked: ".$result->rowCount." (should be 1)<br/>");
+$list[] = array(
+    "Friends requests userid=3 friendid=2",
+    1,
+    $result->rowCount
+);
 
-$result = Friends::accept(3, 2);
-printf("Friends accept: ".$result->rowCount." row affected (should be 0)<br/>");
-
-$result = Friends::accept(2, 3);
-printf("Friends accept: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Friends::getList(1);
-printf("Friends of userid=1 has: ".$result->rowCount." entries (should be 0)<br/>");
-
-$result = Friends::getList(2);
-printf("Friends of userid=2 has: ".$result->rowCount." entries (should be 1)<br/>");
-
-$result = Friends::getList(3);
-printf("Friends of userid=3 has: ".$result->rowCount." entries (should be 1)<br/>");
-
-$result = Friends::block(2, 3);
-printf("Friends block: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Friends::remove(2, 3);
-printf("Friends block removed: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Friends::block(3, 2);
-printf("Friends block: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Friends::request(3, 1);
-printf("Friends request is blocked: ".$result->rowCount." (should be 0)<br/>");
-
-$result = Friends::request(3, 2);
-printf("Friends request is blocked: ".$result->rowCount." (should be 0)<br/>");
-
-$result = Friends::request(1, 3);
-printf("Friends request is blocked: ".$result->rowCount." (should be 0)<br/>");
-
-$result = Friends::request(2, 3);
-printf("Friends request is blocked: ".$result->rowCount." (should be 0)<br/>");
+Friends::accept(2, 3);
 
 $result = Friends::select();
-printf("Friends has: ".$result->rowCount." entries (should be 2)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Friends has 2 entries",
+    2,
+    $result->rowCount
+);
+/**********************************************/
+
+Tests::run("Friends", $list);

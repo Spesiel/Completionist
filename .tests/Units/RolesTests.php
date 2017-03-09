@@ -1,42 +1,43 @@
 <?php namespace Completionist\Tests\Units;
 
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
+
+use Completionist\Tests\Functions as Tests;
 use Completionist\Dao\Users as Users;
 
 /***********************************************
 * Adding users
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
-printf("<h1>Users insert</h1><hr/>");
+Users::insert("test1", "", "testhash");
+Users::insert("test2", "", "testhash");
 
-$result = Users::select();
-printf("Users has: ".$result->rowCount." entries<br/>");
-var_dump($result->rows);
-
-$result = Users::insert("test1", "", "testhash");
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Users::insert("test2", "", "testhash");
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Users::select();
-printf("Users has: ".$result->rowCount." entries (should be 2)<br/>");
-var_dump($result->rows);
 /**********************************************/
 
 /***********************************************
 * Tests on Users->role select/update
 ***********************************************/
-printf("<h1>Users->role select/update</h1><hr/>");
+$list = array();
 
 $result = Users::setRole(1, "admin");
-var_dump($result);
+$list[] = array(
+    "Users->role: 1 row affected",
+    1,
+    $result->rowCount
+);
 
 $result = Users::setRole(2, "poweruser");
-var_dump($result);
+$list[] = array(
+    "Users->role: 1 row affected",
+    1,
+    $result->rowCount
+);
 
 $result = Users::getRole(1);
-var_dump($result);
+$list[] = array(
+    "Users->role: check value userid=1",
+    "admin",
+    $result
+);
+/**********************************************/
 
-$result = Users::select();
-printf("Users has: ".$result->rowCount." entries (should be 4)<br/>");
-var_dump($result->rows);
+Tests::run("Users->role", $list);
