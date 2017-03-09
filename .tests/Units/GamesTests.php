@@ -1,81 +1,99 @@
 <?php namespace Completionist\Tests\Units;
 
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Games.php";
+
+use Completionist\Tests\Functions as Tests;
 use Completionist\Dao\Users as Users;
 use Completionist\Dao\Games as Games;
 
 /***********************************************
 * Adding users
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
-printf("<h1>Users insert</h1><hr/>");
+$list = array();
 
 $result = Users::select();
-printf("Users has: ".$result->rowCount." entries<br/>");
+$list[] = array(
+    "Users should be empty",
+    0,
+    $result->rowCount
+);
 
 $result = Users::insert("test1", "", "testhash");
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Users insert: 1 row affected",
+    1,
+    $result->rowCount
+);
 
 $result = Users::insert("test2", "", "testhash");
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Users insert: 1 row affected",
+    1,
+    $result->rowCount
+);
+
 /**********************************************/
 
 /***********************************************
 * Tests on games select/insert/update
 ***********************************************/
-require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Games.php";
-printf("<h1>Games select/insert/update</h1><hr/>");
-
 $result = Games::select();
-printf("Games has: ".$result->rowCount." entries<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Games should be empty",
+    0,
+    $result->rowCount
+);
 
 $result = Games::insert("game0", "link", "comment", 1);
-printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Games has 1 entry",
+    1,
+    $result->rowCount
+);
 
 $result = Games::lock(1, 1);
-printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Games locked: 1 row affected",
+    1,
+    $result->rowCount
+);
 
 $result = Games::select();
-printf("Games has: ".$result->rowCount." entries (should be 2)<br/>");
+$list[] = array(
+    "Games has 2 entry",
+    2,
+    $result->rowCount
+);
 
 $result = Games::insert("game1", "link", "comment", 2);
-printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
-sleep(1);
+$list[] = array(
+    "Games insert: 1 row affected",
+    1,
+    $result->rowCount
+);
 $result = Games::update(3, "game1 updated", "link", "comment updated", 2);
-printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
+$list[] = array(
+    "Games update: 1 row affected",
+    1,
+    $result->rowCount
+);
 
-$result = Games::insertSub(3, "game1 sub", "link sub", "comment sub", 2);
-printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Games::update(5, "game1 sub updated", "link sub updated", "comment sub updated", 2);
-printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Games::insertSub(5, "game1 sub sub 1", "link sub sub", "comment sub sub", 2);
-printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Games::insertSub(7, "game1 sub sub 1 leaf 1", "link sub sub leaf", "comment sub sub leaf", 2);
-printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Games::insertSub(7, "game1 sub sub 1 leaf 2", "link sub sub leaf", "comment sub sub leaf", 2);
-printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Games::insertSub(5, "game1 sub sub 2", "link sub sub", "comment sub sub", 2);
-printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Games::insertSub(10, "game1 sub sub 2 leaf 1", "link sub sub leaf", "comment sub sub leaf", 2);
-printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Games::insertSub(10, "game1 sub sub 2 leaf 2", "link sub sub leaf", "comment sub sub leaf", 2);
-printf("Games: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Games::getTree(3);
-printf("Gameid=3 tree:<br/>");
-ini_set('xdebug.var_display_max_depth', -1);
-ini_set('xdebug.var_display_max_children', -1);
-ini_set('xdebug.var_display_max_data', -1);
-var_dump($result);
+Games::insertSub(3, "game1 sub", "link sub", "comment sub", 2);
+Games::update(5, "game1 sub updated", "link sub updated", "comment sub updated", 2);
+Games::insertSub(5, "game1 sub sub 1", "link sub sub", "comment sub sub", 2);
+Games::insertSub(7, "game1 sub sub 1 leaf 1", "link sub sub leaf", "comment sub sub leaf", 2);
+Games::insertSub(7, "game1 sub sub 1 leaf 2", "link sub sub leaf", "comment sub sub leaf", 2);
+Games::insertSub(5, "game1 sub sub 2", "link sub sub", "comment sub sub", 2);
+Games::insertSub(10, "game1 sub sub 2 leaf 1", "link sub sub leaf", "comment sub sub leaf", 2);
+Games::insertSub(10, "game1 sub sub 2 leaf 2", "link sub sub leaf", "comment sub sub leaf", 2);
 
 $result = Games::select();
-printf("Games has: ".$result->rowCount." entries (should be 8)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Games has 12 entry",
+    12,
+    $result->rowCount
+);
 /**********************************************/
+
+Tests::run("Games", $list);
