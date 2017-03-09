@@ -22,4 +22,4 @@ foreach (TABLES as $key => $value) {
     }
 }
 
-Tests::run("Reset", $list);
+Tests::run("Reset", $list, true);

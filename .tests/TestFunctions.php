@@ -2,7 +2,7 @@
 
 class Functions
 {
-    public static function run($title, $list)
+    public static function run($title, $list, $quiet = false)
     {
         $result = true;
         $assertResults = array();
@@ -28,6 +28,8 @@ class Functions
         $html .= "</details>";
 
         // Output to page
-        printf($html);
+        if (!$quiet && $result) {
+            printf($html);
+        }
     }
 }
