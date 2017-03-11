@@ -13,7 +13,7 @@ class Database
     public static function select($table = "", $columns = array("*"), $filters = array())
     {
         // Some verifications on arguments
-        static::checkArguments(Keywords::SELECT, $table, $columns, array(), $filters);
+        static::checkArguments(Keywords::DBSELECT, $table, $columns, array(), $filters);
 
         $query = "SELECT ".implode(",", $columns)
             ." FROM $table"
@@ -24,7 +24,7 @@ class Database
 
     public static function insert($table = "", $columns = array(), $values = array())
     {
-        static::checkArguments(Keywords::INSERT, $table, $columns, $values, array());
+        static::checkArguments(Keywords::DBINSERT, $table, $columns, $values, array());
 
         $query = "INSERT INTO $table "
             ."(".implode(",", $columns).") "
@@ -36,7 +36,7 @@ class Database
 
     public static function update($table = "", $columns = array(), $values = array(), $filters = array())
     {
-        static::checkArguments(Keywords::UPDATE, $table, $columns, $values, $filters);
+        static::checkArguments(Keywords::DBUPDATE, $table, $columns, $values, $filters);
 
         $query = "UPDATE $table SET ";
         $args = array();
@@ -57,7 +57,7 @@ class Database
 
     public static function delete($table = "", $filters = array())
     {
-        static::checkArguments(Keywords::DELETE, $table, array("userid","gameid"), array("userid","gameid"), $filters);
+        static::checkArguments(Keywords::DBDELETE, $table, array("userid","gameid"), array("userid","gameid"), $filters);
 
         $query = "DELETE FROM $table"
             .(!empty($filters)?" WHERE ".implode(" AND ", $filters):"");
@@ -83,7 +83,7 @@ class Database
         if (!is_array($values)) {
             throw new InvalidArgumentException("=== $caller: \$columns: expected array, got ".gettype($columns));
         }
-        if (!substr_compare($caller, Keywords::SELECT, 0) && !count($values)) {
+        if (($caller!=Keywords::DBSELECT) && !count($values)) {
             throw new InvalidArgumentException("=== $caller: \$values cannot be empty");
         }
         if (!is_array($filters)) {
@@ -106,7 +106,7 @@ class Database
             $connection->beginTransaction();
             $statement = $connection->prepare($query);
             $statement->execute();
-            if (substr($query, 0, 6)===Keywords::SELECT) {
+            if (substr($query, 0, 6)===Keywords::DBSELECT) {
                 $result->rows = $statement->fetchAll(PDO::FETCH_OBJ);
                 $result->rowCount = count($result->rows);
             } else {

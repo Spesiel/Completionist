@@ -12,14 +12,13 @@ const TABLES = array(
     "users"     => true
 );
 
-<<<<<<< HEAD:.tests/reset.php
 foreach (TABLES as $key => $value) {
-    plop("SET foreign_key_checks = 0; TRUNCATE TABLE $key; SET foreign_key_checks = 1;", $key);
-=======
+    dbExecute("SET foreign_key_checks = 0; TRUNCATE TABLE $key; SET foreign_key_checks = 1;", $key);
+}
+
 function dbExecute($query, $key)
 {
     require_once $_SERVER["DOCUMENT_ROOT"]."\lib\CompletionistException.php";
->>>>>>> develop:.tests/Units/resetFunctions.php
 
     $result = false;
 
