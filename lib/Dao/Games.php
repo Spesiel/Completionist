@@ -9,6 +9,11 @@ class Games
         return Database::select(Tables::GAMES, $columns, $filters);
     }
 
+    public static function getList()
+    {
+        return self::select(array("*"), array("gameid=gameidorigin","gameidorigin=gameidrelated"));
+    }
+
     public static function getTree($gameid)
     {
         $result = new \stdclass;

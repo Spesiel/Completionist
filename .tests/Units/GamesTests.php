@@ -88,6 +88,13 @@ Games::insertSub(5, "game1 sub sub 2", "link sub sub", "comment sub sub", 2);
 Games::insertSub(10, "game1 sub sub 2 leaf 1", "link sub sub leaf", "comment sub sub leaf", 2);
 Games::insertSub(10, "game1 sub sub 2 leaf 2", "link sub sub leaf", "comment sub sub leaf", 2);
 
+$result = Games::getList();
+$list[] = array(
+    "Games: 2 items in list",
+    2,
+    $result->rowCount
+);
+
 $result = Games::select();
 $list[] = array(
     "Games has 12 entry",
