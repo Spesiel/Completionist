@@ -15,7 +15,7 @@ require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/SessionsTests.php";
 require $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/reset.php";
 
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/GamesTests.php";
-
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/CompletionTests.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/BookmarksTests.php";
 require $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/reset.php";
 

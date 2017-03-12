@@ -13,19 +13,40 @@ class Completion
 
     public static function select($columns = array("*"), $filters = array())
     {
-        return Database::select(Tables::COMPLETION, $columns, $filters);
+        $result = Database::select(Tables::COMPLETION, $columns, $filters);
+
+        foreach ($result->rows as $row) {
+            $row->status = self::STATUS[$row->status];
+        }
+        return $result;
     }
 
-    public static function insert($userid, $gameid, $status = null, $comment = null)
+    public static function set($userid, $gameid, $status = null, $comment = null)
+    {
+        $result = self::select(array("*"), array("userid=$userid", "gameid=$gameid"));
+
+        if ($status) {
+            $status = array_search($status, self::STATUS);
+        }
+
+        switch ($result->rowCount) {
+            case 0:
+                return self::insert($userid, $gameid, $status, $comment);
+            default:
+                return self::update($userid, $gameid, $status, $comment);
+        }
+    }
+
+    private static function insert($userid, $gameid, $status = null, $comment = null)
     {
         return Database::insert(
             Tables::COMPLETION,
-            Database::TABLES[Tables::COMPLETION],
+            Tables::LISTING[Tables::COMPLETION],
             array($userid, $gameid, $status, Database::encodeString($comment))
         );
     }
 
-    public static function update($userid, $gameid, $status = null, $comment = null)
+    private static function update($userid, $gameid, $status = null, $comment = null)
     {
         $columns = array();
         $values = array();
