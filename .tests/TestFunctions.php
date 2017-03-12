@@ -15,7 +15,7 @@ class Functions
         }
 
         // Building the output
-        $html = "<hr/><details>".
+        $html = "<details>".
                     "<summary>$title: ".(
                         $result? "&#9989;" : "&#10060;"
                     )."</summary>";
