@@ -1,69 +1,95 @@
 <?php namespace Completionist\Tests\Units;
 
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Users.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Dao\Messages.php";
+
+use Completionist\Tests\Functions as Tests;
 use Completionist\Dao\Users as Users;
 use Completionist\Dao\Messages as Messages;
 
 /***********************************************
 * Adding users
 ***********************************************/
-printf("<h1>Users insert</h1><hr/>");
+$list = array();
+
+Users::insert("testMessages1", "", "testhash");
+Users::insert("testMessages2", "", "testhash");
 
 $result = Users::select();
-printf("Users has: ".$result->rowCount." entries<br/>");
-var_dump($result->rows);
-
-$result = Users::insert("testMessages1", "", "testhash");
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Users::insert("testMessages2", "", "testhash");
-printf("Users: ".$result->rowCount." row affected (should be 1)<br/>");
-
-$result = Users::select();
-printf("Users has: ".$result->rowCount." entries (should be 2)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Users has 2 entries",
+    2,
+    $result->rowCount
+);
 /**********************************************/
 
 /***********************************************
 * Tests on messages select/insert/update
 ***********************************************/
-printf("<h1>Messages select/insert/update</h1><hr/>");
-
 $result = Messages::select();
-printf("Messages has: ".$result->rowCount." entries<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Messages should be empty",
+    0,
+    $result->rowCount
+);
 
 $result = Messages::getAll(1);
-printf("Messages for userid=1 has: ".$result->rowCount." entries<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Messages for userid=1 should be empty",
+    0,
+    $result->rowCount
+);
 
-$result = Messages::send(1, 2, "this is a title", "this is the body");
-printf("Messages for userid=1 has: ".$result->rowCount." entries<br/>");
-var_dump($result);
+Messages::send(1, 2, "this is a title", "this is the body");
 
 $result = Messages::getAll(1);
-printf("Messages for userid=1 has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Messages for userid=1 has 1 entry",
+    1,
+    $result->rowCount
+);
 
 $result = Messages::getAll(2);
-printf("Messages for userid=2 has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Messages for userid=2 has 1 entry",
+    1,
+    $result->rowCount
+);
 
 $result = Messages::open(1, 1);
-printf("Messages for userid=1 has: ".$result->rowCount." entries (should be 0)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Messages for userid=1 opening",
+    0,
+    $result->rowCount
+);
 
 $result = Messages::open(2, 1);
-printf("Messages for userid=2 has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Messages for userid=2 opening",
+    1,
+    $result->rowCount
+);
 
 $result = Messages::delete(2, 1);
-printf("Messages for userid=2 has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result);
+$list[] = array(
+    "Messages for userid=1 deleting",
+    1,
+    $result->rowCount
+);
 
 $result = Messages::getAll(1);
-printf("Messages for userid=1 has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Messages for userid=1 getAll",
+    1,
+    $result->rowCount
+);
 
 $result = Messages::getAll(2);
-printf("Messages for userid=2 has: ".$result->rowCount." entries (should be 1)<br/>");
-var_dump($result->rows);
+$list[] = array(
+    "Messages for userid=2 getAll",
+    1,
+    $result->rowCount
+);
+/**********************************************/
+
+Tests::run("Messages", $list);

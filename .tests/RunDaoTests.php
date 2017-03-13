@@ -25,6 +25,10 @@ require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/Dao/FriendsTests.php";
 require $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/reset.php";
 
 printf("<hr/>");
+require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/Dao/MessagesTests.php";
+require $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/reset.php";
+
+printf("<hr/>");
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/Dao/RolesTests.php";
 require $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/reset.php";
 /***********************************************/
