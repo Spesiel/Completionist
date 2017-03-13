@@ -1,0 +1,24 @@
+Things to add:
+    Friends:
+        ✔ Better Status format @done (3/3/2017, 3:15:14 AM)
+        ✔ Ability to block users @done (3/3/2017, 3:15:16 AM)
+        ✔ Test the status and blocking system @done (3/3/2017, 4:33:19 AM)
+    Games:
+        ✔ Ability to get a tree for a game @done (3/2/2017, 10:29:10 PM)
+    Completion:
+        ✔ Define statuses for tasks progression @done (3/4/2017, 11:15:18 PM)
+        ✔ Methods for tasks progression @done (3/12/2017, 10:28:55 AM)
+    Curators:
+        ???
+
+Tables to create:
+    ✔ Completion @done (3/3/2017, 3:24:40 PM)
+    ✘ Roles @cancelled (3/2/2017, 4:04:13 PM) -- It has been integrated into Users
+
+Tables to test:
+    ✔ Friends @done (2/23/2017, 2:23:53 PM)
+    ✔ Messages @done (2/26/2017, 11:47:51 AM)
+    ✔ Completion @done (3/12/2017, 10:29:09 AM)
+
+To look up:
+    ✘ Modify Games table to allow for typing of tree objects? @cancelled (3/2/2017, 10:29:11 PM)
