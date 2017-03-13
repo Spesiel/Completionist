@@ -1,4 +1,4 @@
-<?php namespace Completionist\Dao;
+<?php namespace Completionist\Business;
 
 use Completionist\Helper\PasswordHelper as PasswordHelper;
 
