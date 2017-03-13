@@ -10,7 +10,7 @@ use Completionist\Business\Games as Games;
 /***********************************************
 * Tests on games
 ***********************************************/
-$list[] = array();
+$list = array();
 /**********************************************/
 
 Tests::run("Games", $list);
