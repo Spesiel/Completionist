@@ -2,32 +2,31 @@
 
 use Completionist\Helper\PasswordHelper as PasswordHelper;
 use Completionist\Constants\Tables as Tables;
+use Completionist\Constants\Roles as Roles;
 
 class Users
 {
-    const ROLES = array(
-        127 => "admin",
-         63 => "poweruser",
-          1 => "user"
-    );
-
     public static function select($columns = array("*"), $filters = array())
     {
         $result = Database::select(Tables::USERS, $columns, $filters);
 
         foreach ($result->rows as $row) {
-            $row->role = self::ROLES[($row->role)];
+            if (!empty($row->role)) {
+                $row->role = Roles::ROLES[($row->role)];
+            }
         }
 
         return $result;
     }
 
-    public static function insert($name, $email, $password)
+    public static function insert($name, $email, $hash)
     {
-        $hash = PasswordHelper::encode($password);
-
         if (empty($email)) {
-            return Database::insert(Tables::USERS, array("name","hash"), array(Database::encodeString($name), $hash));
+            return Database::insert(
+                Tables::USERS,
+                array("name","hash"),
+                array(Database::encodeString($name), $hash)
+            );
         } else {
             return Database::insert(
                 Tables::USERS,
@@ -37,10 +36,8 @@ class Users
         }
     }
 
-    public static function update($userid, $name, $email, $password)
+    public static function update($userid, $name, $email, $hash)
     {
-        $hash = PasswordHelper::encode($password);
-
         $columns = array();
         $values = array();
 
@@ -58,7 +55,12 @@ class Users
         }
 
         self::saveEntry($userid);
-        return Database::update(Tables::USERS, $columns, $values, array("userid=useridorigin", "useridorigin=$userid"));
+        return Database::update(
+            Tables::USERS,
+            $columns,
+            $values,
+            array("userid=useridorigin", "useridorigin=$userid")
+        );
     }
 
     public static function activate($userid)
@@ -86,7 +88,7 @@ class Users
     public static function getRole($userid)
     {
         $roles = Database::select(Tables::USERS, array("role"), array("userid=$userid","useridorigin=userid"));
-        return self::ROLES[($roles->rows[0]->role)];
+        return Roles::ROLES[($roles->rows[0]->role)];
     }
 
     public static function setRole($userid, $role)
@@ -95,7 +97,7 @@ class Users
         return Database::update(
             Tables::USERS,
             array("role"),
-            array(array_search($role, self::ROLES)),
+            array((Roles::LISTING[$role])),
             array("userid=useridorigin", "useridorigin=$userid")
         );
     }
@@ -108,6 +110,10 @@ class Users
             array("userid=useridorigin", "useridorigin=$userid")
         );
         $result = json_decode(json_encode($result->rows[0]), true);
-        Database::insert(Tables::USERS, array("useridorigin","name","email","hash","modification","active","role"), $result);
+        Database::insert(
+            Tables::USERS,
+            array("useridorigin","name","email","hash","modification","active","role"),
+            $result
+        );
     }
 }
