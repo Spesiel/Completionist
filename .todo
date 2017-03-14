@@ -1,10 +1,10 @@
 Constants:
     Users:
-        ☐ Move constants to external file
-        ☐ Test logic
+        ✔ Move constants to external file @done (3/13/2017, 8:15:45 PM)
+        ✔ Test logic @done (3/13/2017, 8:15:46 PM)
     Roles:
-        ☐ Move constants to external file
-        ☐ Test logic
+        ✔ Move constants to external file @done (3/14/2017, 8:45:56 AM)
+        ✔ Test logic @done (3/14/2017, 8:45:57 AM)
     Sessions:
         ☐ Move constants to external file
         ☐ Test logic
@@ -29,7 +29,7 @@ Constants:
 
 Dao Layer:
     Users:
-        ☐ Remove password generation/management
+        ✔ Remove password generation/management @done (3/13/2017, 8:15:37 PM)
         ☐ Add useridmodifier column as a PK bigint(20), with useridorigin as FK
         ☐ Modify methods to take useridmodifier into account
     Curators:
@@ -41,11 +41,15 @@ Business Layer:
         ☐ Define
     Layer items:
         Users:
-            ☐ Create logic
-            ☐ Test logic
+            ✔ Create logic @done (3/14/2017, 8:44:56 AM)
+                ✔ Create/Update @done (3/13/2017, 9:05:33 PM)
+                ✔ Activate/Deactivate @done (3/14/2017, 8:44:53 AM)
+                ✔ Get/Set role @done (3/14/2017, 8:44:54 AM)
+            ✔ Test logic @done (3/14/2017, 8:44:57 AM)
         Roles:
-            ☐ Create logic
-            ☐ Test logic
+            ✘ Create logic @cancelled (3/14/2017, 8:45:13 AM)
+            ✘ Test logic @cancelled (3/14/2017, 8:45:14 AM)
+            ✔ Integrated into Users @done (3/14/2017, 8:45:45 AM)
         Sessions:
             ☐ Create logic
             ☐ Test logic
