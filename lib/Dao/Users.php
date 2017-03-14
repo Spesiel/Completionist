@@ -97,7 +97,7 @@ class Users
         return Database::update(
             Tables::USERS,
             array("role"),
-            array((Roles::LISTING[$role])),
+            array($role),
             array("userid=useridorigin", "useridorigin=$userid")
         );
     }

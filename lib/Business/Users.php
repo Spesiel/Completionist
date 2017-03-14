@@ -50,6 +50,36 @@ class Users
         return $result;
     }
 
-    /* TODO */
-    // activate/deactivate/getrole/setrole
+    public static function getRole($id)
+    {
+        return new Result(DUsers::getRole($id));
+    }
+
+    public static function setRole($id, $role)
+    {
+        $result = DUsers::setRole($id, $role);
+
+        return new Result($result->rowCount);
+    }
+
+    public static function getStatus($id)
+    {
+        $select = DUsers::select(array("active"), array("userid=useridorigin","useridorigin=$id"));
+
+        return new Result(($select->rows[0]->active)?true:false);
+    }
+
+    public static function enable($id)
+    {
+        $result = DUsers::activate($id);
+
+        return new Result($result->rowCount);
+    }
+
+    public static function disable($id)
+    {
+        $result = DUsers::deactivate($id);
+
+        return new Result($result->rowCount);
+    }
 }

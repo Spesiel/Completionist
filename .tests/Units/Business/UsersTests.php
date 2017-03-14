@@ -65,6 +65,90 @@ $list[] = array(
     true,
     $result->result
 );
+
+$result = Users::getRole(1);
+$list[] = array(
+    "Users role: is user",
+    "user",
+    $result->result
+);
+
+$result = Users::setRole(1, 127);
+$list[] = array(
+    "Users role: set to admin",
+    1,
+    $result->result
+);
+
+$result = Users::getRole(1);
+$list[] = array(
+    "Users role: is admin",
+    "admin",
+    $result->result
+);
+
+$result = Users::setRole(1, 63);
+$list[] = array(
+    "Users role: set to poweruser",
+    1,
+    $result->result
+);
+
+$result = Users::getRole(1);
+$list[] = array(
+    "Users role: is poweruser",
+    "poweruser",
+    $result->result
+);
+
+$result = Users::setRole(1, 1);
+$list[] = array(
+    "Users role: set to user",
+    1,
+    $result->result
+);
+
+$result = Users::getRole(1);
+$list[] = array(
+    "Users role: is user",
+    "user",
+    $result->result
+);
+
+$result = Users::getStatus(1);
+$list[] = array(
+    "Users status: is enabled",
+    true,
+    $result->result
+);
+
+$result = Users::disable(1);
+$list[] = array(
+    "Users status: set disabled",
+    1,
+    $result->result
+);
+
+$result = Users::getStatus(1);
+$list[] = array(
+    "Users status: is disabled",
+    false,
+    $result->result
+);
+
+$result = Users::enable(1);
+$list[] = array(
+    "Users status: set enabled",
+    1,
+    $result->result
+);
+
+$result = Users::getStatus(1);
+$list[] = array(
+    "Users status: is enabled",
+    true,
+    $result->result
+);
 /**********************************************/
 
 Tests::run("Users", $list);

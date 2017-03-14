@@ -4,7 +4,6 @@ use Completionist\Tests\Functions as Tests;
 
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/resetFunctions.php";
 
-
 $list = array();
 foreach (TABLES as $key => $value) {
     $list[] = array(

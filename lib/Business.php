@@ -1,6 +1,7 @@
 <?php namespace Completionist;
 
 require_once $_SERVER["DOCUMENT_ROOT"]."\lib\CompletionistException.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Helpers.php";
 
 // Link to database functions and tables
 require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Database.php";

@@ -12,10 +12,6 @@ const TABLES = array(
     "users"     => true
 );
 
-foreach (TABLES as $key => $value) {
-    dbExecute("SET foreign_key_checks = 0; TRUNCATE TABLE $key; SET foreign_key_checks = 1;", $key);
-}
-
 function dbExecute($query, $key)
 {
     require_once $_SERVER["DOCUMENT_ROOT"]."\lib\CompletionistException.php";
