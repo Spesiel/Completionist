@@ -6,9 +6,9 @@ use Completionist\Dao\Users as DUsers;
 
 class Users
 {
+    // Requests the name see if it is available
     public static function checkName($name)
     {
-        // Requests the name see if it is available
         $select = DUsers::select(array("count(name) AS count"), array("name LIKE '$name'"));
 
         return new Result(intval($select->rows[0]->count));
