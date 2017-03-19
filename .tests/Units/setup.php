@@ -8,9 +8,9 @@ require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Business\Users.php";
 use Completionist\Business\Users as Users;
 
 Users::create("admin", "", "admin");
-Users::setRole(1, 127);
+Users::setRole(1, 127, 1);
 
 Users::create("poweruser", "", "poweruser");
-Users::setRole(3, 63);
+Users::setRole(3, 63, 1);
 
 Users::create("user", "", "user");

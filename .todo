@@ -30,8 +30,8 @@ Constants:
 Dao Layer:
     Users:
         ✔ Remove password generation/management @done (3/13/2017, 8:15:37 PM)
-        ☐ Add useridmodifier column as a PK bigint(20), with useridorigin as FK
-        ☐ Modify methods to take useridmodifier into account
+        ✔ Add useridmodifier column as a PK bigint(20), with useridorigin as FK @done (3/18/2017, 8:57:14 PM)
+        ✔ Modify methods to take useridmodifier into account @done (3/18/2017, 8:57:18 PM)
     Curators:
         ☐ Create logic
         ☐ Test logic

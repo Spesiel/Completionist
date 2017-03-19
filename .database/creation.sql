@@ -29,7 +29,8 @@ CREATE TABLE IF NOT EXISTS `completionist`.`users` (
   `modification` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `active` TINYINT(1) NOT NULL DEFAULT 1,
   `role` TINYINT(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`userid`, `useridorigin`, `name`),
+  `useridmodifier` BIGINT(20) UNSIGNED NOT NULL,
+  PRIMARY KEY (`userid`, `useridorigin`, `name`, `useridmodifier`),
   INDEX `useridorigin_idx` (`useridorigin` ASC))
 ENGINE = InnoDB;
 
@@ -203,6 +204,9 @@ CREATE DEFINER = CURRENT_USER TRIGGER `completionist`.`users_BEFORE_INSERT` BEFO
 BEGIN
 	IF(NEW.useridorigin IS NULL) THEN
 		SET NEW.useridorigin = (SELECT AUTO_INCREMENT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'completionist' AND TABLE_NAME = 'users');
+    END IF;
+	IF(NEW.useridmodifier IS NULL) THEN
+		SET NEW.useridmodifier = NEW.useridorigin;
     END IF;
 END$$
 

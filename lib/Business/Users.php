@@ -38,7 +38,7 @@ class Users
         );
 
         if ($passwordCheck) {
-            $update = DUsers::update($id, $name, $email, PasswordHelper::encode($newPassword));
+            $update = DUsers::update($id, $name, $email, PasswordHelper::encode($newPassword), $id);
             if ($update->rowCount == 1) {
                 $result = new Result(true);
             }
@@ -55,9 +55,9 @@ class Users
         return new Result(DUsers::getRole($id));
     }
 
-    public static function setRole($id, $role)
+    public static function setRole($id, $role, $modifier)
     {
-        $result = DUsers::setRole($id, $role);
+        $result = DUsers::setRole($id, $role, $modifier);
 
         return new Result($result->rowCount);
     }
@@ -69,16 +69,16 @@ class Users
         return new Result(($select->rows[0]->active)?true:false);
     }
 
-    public static function enable($id)
+    public static function enable($id, $modifier)
     {
-        $result = DUsers::activate($id);
+        $result = DUsers::activate($id, $modifier);
 
         return new Result($result->rowCount);
     }
 
-    public static function disable($id)
+    public static function disable($id, $modifier)
     {
-        $result = DUsers::deactivate($id);
+        $result = DUsers::deactivate($id, $modifier);
 
         return new Result($result->rowCount);
     }

@@ -36,7 +36,7 @@ class Users
         }
     }
 
-    public static function update($userid, $name, $email, $hash)
+    public static function update($userid, $name, $email, $hash, $modifier)
     {
         $columns = array();
         $values = array();
@@ -53,6 +53,8 @@ class Users
             $columns[] = "hash";
             $values [] = $hash;
         }
+        $columns[] = "useridmodifier";
+        $values[] = $modifier;
 
         self::saveEntry($userid);
         return Database::update(
@@ -63,24 +65,24 @@ class Users
         );
     }
 
-    public static function activate($userid)
+    public static function activate($userid, $modifier)
     {
         self::saveEntry($userid);
         return Database::update(
             Tables::USERS,
-            array("active"),
-            array(1),
+            array("active", "useridmodifier"),
+            array(1, $modifier),
             array("userid=useridorigin", "useridorigin=$userid")
         );
     }
 
-    public static function deactivate($userid)
+    public static function deactivate($userid, $modifier)
     {
         self::saveEntry($userid);
         return Database::update(
             Tables::USERS,
-            array("active"),
-            array(0),
+            array("active", "useridmodifier"),
+            array(0, $modifier),
             array("userid=useridorigin", "useridorigin=$userid")
         );
     }
@@ -91,13 +93,13 @@ class Users
         return Roles::ROLES[($roles->rows[0]->role)];
     }
 
-    public static function setRole($userid, $role)
+    public static function setRole($userid, $role, $modifier)
     {
         self::saveEntry($userid);
         return Database::update(
             Tables::USERS,
-            array("role"),
-            array($role),
+            array("role", "useridmodifier"),
+            array($role, $modifier),
             array("userid=useridorigin", "useridorigin=$userid")
         );
     }
@@ -106,13 +108,13 @@ class Users
     {
         $result = Database::select(
             Tables::USERS,
-            array("useridorigin","name","email","hash","modification","active","role"),
+            array("useridorigin","name","email","hash","modification","active","role","useridmodifier"),
             array("userid=useridorigin", "useridorigin=$userid")
         );
         $result = json_decode(json_encode($result->rows[0]), true);
         Database::insert(
             Tables::USERS,
-            array("useridorigin","name","email","hash","modification","active","role"),
+            array("useridorigin","name","email","hash","modification","active","role","useridmodifier"),
             $result
         );
     }

@@ -73,7 +73,7 @@ $list[] = array(
     $result->result
 );
 
-$result = Users::setRole(1, 127);
+$result = Users::setRole(1, 127, 1);
 $list[] = array(
     "Users role: set to admin",
     1,
@@ -87,7 +87,7 @@ $list[] = array(
     $result->result
 );
 
-$result = Users::setRole(1, 63);
+$result = Users::setRole(1, 63, 1);
 $list[] = array(
     "Users role: set to poweruser",
     1,
@@ -101,7 +101,7 @@ $list[] = array(
     $result->result
 );
 
-$result = Users::setRole(1, 1);
+$result = Users::setRole(1, 1, 1);
 $list[] = array(
     "Users role: set to user",
     1,
@@ -122,7 +122,7 @@ $list[] = array(
     $result->result
 );
 
-$result = Users::disable(1);
+$result = Users::disable(1, 1);
 $list[] = array(
     "Users status: set disabled",
     1,
@@ -136,7 +136,7 @@ $list[] = array(
     $result->result
 );
 
-$result = Users::enable(1);
+$result = Users::enable(1, 1);
 $list[] = array(
     "Users status: set enabled",
     1,

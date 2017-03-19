@@ -31,13 +31,14 @@ $list[] = array(
     $result->rowCount
 );
 
-$result = Users::deactivate(1);
+$result = Users::deactivate(1, 1);
 $list[] = array(
     "Users deactivation: 1 row affected",
     1,
     $result->rowCount
 );
 
+$result = Users::activate(1, 1);
 $result = Users::select();
 $list[] = array(
     "Users has 2 entry",
