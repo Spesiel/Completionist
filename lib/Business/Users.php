@@ -57,9 +57,16 @@ class Users
 
     public static function setRole($id, $role, $modifier)
     {
-        $result = DUsers::setRole($id, $role, $modifier);
+        $modifierRole = self::getRole($modifier);
+        if (self::isAdmin($modifier)) {
+            $result = new Result(false);
+            $result->errors[] = "Request denied";
+        } else {
+            $result = DUsers::setRole($id, $role, $modifier);
+            $result = new Result($result->rowCount);
+        }
 
-        return new Result($result->rowCount);
+        return $result;
     }
 
     public static function getStatus($id)
@@ -71,15 +78,34 @@ class Users
 
     public static function enable($id, $modifier)
     {
-        $result = DUsers::activate($id, $modifier);
+        $modifierRole = self::getRole($modifier);
+        if (self::isAdmin($modifier)) {
+            $result = new Result(false);
+            $result->errors[] = "Request denied";
+        } else {
+            $result = DUsers::activate($id, $modifier);
+            $result = new Result($result->rowCount);
+        }
 
-        return new Result($result->rowCount);
+        return $result;
     }
 
     public static function disable($id, $modifier)
     {
-        $result = DUsers::deactivate($id, $modifier);
+        if (self::isAdmin($modifier)) {
+            $result = new Result(false);
+            $result->errors[] = "Request denied";
+        } else {
+            $result = DUsers::deactivate($id, $modifier);
+            $result = new Result($result->rowCount);
+        }
 
-        return new Result($result->rowCount);
+        return $result;
+    }
+
+    private static function isAdmin($userid)
+    {
+        $result = self::getRole($userid);
+        return ($result->result!=="admin");
     }
 }

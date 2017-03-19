@@ -5,6 +5,9 @@ require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Business\Users.php";
 use Completionist\Tests\Functions as Tests;
 use Completionist\Business\Users as Users;
 
+//require_once $_SERVER["DOCUMENT_ROOT"]."\lib\Business\Users.php";
+use Completionist\Dao\Users as DUsers;
+
 /***********************************************
 * Tests on users
 ***********************************************/
@@ -66,84 +69,94 @@ $list[] = array(
     $result->result
 );
 
-$result = Users::getRole(1);
+DUsers::setRole(1, 127, 1);
+Users::create("test", null, "test");
+
+$result = Users::getRole(4);
 $list[] = array(
     "Users role: is user",
     "user",
     $result->result
 );
 
-$result = Users::setRole(1, 127, 1);
+$result = Users::setRole(4, 127, 4);
+$list[] = array(
+    "Users role: denied setting value",
+    1,
+    count($result->errors)
+);
+
+$result = Users::setRole(4, 127, 1);
 $list[] = array(
     "Users role: set to admin",
     1,
     $result->result
 );
 
-$result = Users::getRole(1);
+$result = Users::getRole(4);
 $list[] = array(
     "Users role: is admin",
     "admin",
     $result->result
 );
 
-$result = Users::setRole(1, 63, 1);
+$result = Users::setRole(4, 63, 1);
 $list[] = array(
     "Users role: set to poweruser",
     1,
     $result->result
 );
 
-$result = Users::getRole(1);
+$result = Users::getRole(4);
 $list[] = array(
     "Users role: is poweruser",
     "poweruser",
     $result->result
 );
 
-$result = Users::setRole(1, 1, 1);
+$result = Users::setRole(4, 1, 1);
 $list[] = array(
     "Users role: set to user",
     1,
     $result->result
 );
 
-$result = Users::getRole(1);
+$result = Users::getRole(4);
 $list[] = array(
     "Users role: is user",
     "user",
     $result->result
 );
 
-$result = Users::getStatus(1);
+$result = Users::getStatus(4);
 $list[] = array(
     "Users status: is enabled",
     true,
     $result->result
 );
 
-$result = Users::disable(1, 1);
+$result = Users::disable(4, 1);
 $list[] = array(
     "Users status: set disabled",
     1,
     $result->result
 );
 
-$result = Users::getStatus(1);
+$result = Users::getStatus(4);
 $list[] = array(
     "Users status: is disabled",
     false,
     $result->result
 );
 
-$result = Users::enable(1, 1);
+$result = Users::enable(4, 1);
 $list[] = array(
     "Users status: set enabled",
     1,
     $result->result
 );
 
-$result = Users::getStatus(1);
+$result = Users::getStatus(4);
 $list[] = array(
     "Users status: is enabled",
     true,

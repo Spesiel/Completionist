@@ -28,7 +28,7 @@ class Functions
         $html .= "</details>";
 
         // Output to page
-        if (!$quiet && $result) {
+        if (!$quiet) {
             printf($html);
         }
     }
