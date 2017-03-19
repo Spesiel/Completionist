@@ -46,6 +46,7 @@ Business Layer:
                 ✔ Activate/Deactivate @done (3/14/2017, 8:44:53 AM)
                 ✔ Get/Set role @done (3/14/2017, 8:44:54 AM)
             ✔ Test logic @done (3/14/2017, 8:44:57 AM)
+            ✔ Debug @done (3/18/2017, 10:01:14 PM)
         Roles:
             ✘ Create logic @cancelled (3/14/2017, 8:45:13 AM)
             ✘ Test logic @cancelled (3/14/2017, 8:45:14 AM)
