@@ -21,19 +21,15 @@ require $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/setup.php";
 printf("<hr/>");
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/Business/MessagesTests.php";
 require $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/setup.php";
-//
-printf("<hr/>");
-require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/Business/RolesTests.php";
-require $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/setup.php";
-//
+
 printf("<hr/>");
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/Business/GamesTests.php";
 require $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/setup.php";
-//
+
 printf("<hr/>");
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/Business/BookmarksTests.php";
 require $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/setup.php";
-//
+
 printf("<hr/>");
 require_once $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/Business/CompletionTests.php";
 require $_SERVER["DOCUMENT_ROOT"]."/.tests/Units/reset.php";
