@@ -1,6 +1,5 @@
 <?php namespace Completionist\Dao;
 
-use Completionist\Helper\PasswordHelper as PasswordHelper;
 use Completionist\Constants\Tables as Tables;
 use Completionist\Constants\Roles as Roles;
 
