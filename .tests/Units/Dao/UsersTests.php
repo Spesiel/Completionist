@@ -41,8 +41,8 @@ $list[] = array(
 $result = Users::activate(1, 1);
 $result = Users::select();
 $list[] = array(
-    "Users has 2 entry",
-    2,
+    "Users has 3 entry",
+    3,
     $result->rowCount
 );
 
@@ -53,7 +53,7 @@ $list[] = array(
     $result->rowCount
 );
 sleep(2);
-$result = Users::update(3, "test1", "", "testhash1");
+$result = Users::update(4, "test1", "", "testhash1", 4);
 $list[] = array(
     "Users update: 1 row affected",
     1,
@@ -62,8 +62,8 @@ $list[] = array(
 
 $result = Users::select();
 $list[] = array(
-    "Users has 4 entry",
-    4,
+    "Users has 5 entry",
+    5,
     $result->rowCount
 );
 /**********************************************/
